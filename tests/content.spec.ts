@@ -26,3 +26,10 @@ test("every stat label renders", async ({ page }) => {
     ).toBeVisible();
   }
 });
+
+test("every risk-scale band renders its range and label", async ({ page }) => {
+  for (const band of content.riskScale) {
+    await expect(page.getByText(band.range, { exact: true }).first()).toBeVisible();
+    await expect(page.getByText(band.label, { exact: true }).first()).toBeVisible();
+  }
+});

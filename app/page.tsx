@@ -1,6 +1,7 @@
 import { Hero } from "@/components/hero";
 import { CredibilityStrip } from "@/components/credibility-strip";
 import { Stat } from "@/components/stat-link";
+import { RiskScale } from "@/components/risk-scale";
 import { getPageContent } from "@/lib/content";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
           sourceId={usDeaths.sourceId}
         />
       </section>
+      <RiskScale />
     </main>
   );
 }
