@@ -6,9 +6,14 @@
 
 **Architecture:** Next.js 16 (App Router) statically renders one long page assembled from presentational components fed by a typed content layer (`content/` → `lib/content.ts`, the only seam). Two forms use React 19 Server Actions (Resend). Every on-page statistic links to its primary source, enforced by a data-driven Playwright test. Built test-first (Playwright red→green→refactor).
 
-**Tech Stack:** Next.js 16, React 19.2, TypeScript, Tailwind v4, shadcn/ui (Radix), Zod, Resend, Vercel Web Analytics, `@playwright/test`, `next/font` (Newsreader + Public Sans). Turbopack is the default dev/build engine.
+**Tech Stack:** Next.js 16, React 19.2, TypeScript, Tailwind v4, shadcn/ui (Base UI, base-nova preset), Zod v4, Resend, Vercel Web Analytics, `@playwright/test`, `next/font` (Newsreader + Public Sans). Turbopack is the default dev/build engine.
 
 **Spec:** `docs/superpowers/specs/2026-06-13-radon-guide-v1-website-design.md` — read it before starting; section references below (e.g. "spec §7.1") point to it.
+
+> **⚠️ Reality reconciliation (read first).** Execution found the environment is **Next.js 16 / React 19.2** with **shadcn (Base UI, `base-nova`)**. These standing corrections override the older snippets below:
+> 1. **shadcn owns `app/globals.css` + `app/layout.tsx`** — we *edit* them, not create them. Done in Chunk 2 (commit `15ef1ec`): Newsreader/Public Sans fonts + a two-tier **hex** token system (primitives `--brand-*`/`--ink-*`/`--risk-*` in `:root` → shadcn semantics via `var()`). `lib/utils.ts` (`cn`) + `components/ui/*` already generated.
+> 2. **Token classes:** use `brand-NNN` (Blue Vivid), `ink-NNN` (Cool Grey), `risk-*` (ramp), and shadcn semantics (`bg-primary`, `text-foreground`, `border-border`). Wherever a snippet below shows `primary-NNN`, read it as `brand-NNN`.
+> 3. **Verify before writing:** Zod **v4** API (`z.email()` vs `z.string().email()`, `z.custom`) and any Next API against `node_modules/next/dist/docs/`.
 
 ---
 
