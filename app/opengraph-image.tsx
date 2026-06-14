@@ -3,7 +3,7 @@ import { getPageContent } from "@/lib/content";
 import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 // Static branded social card, prerendered at build (the page is static).
-export const alt = "Radon in South Lake Tahoe — test your home";
+export const alt = getPageContent().meta.title;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

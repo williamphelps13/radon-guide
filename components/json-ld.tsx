@@ -1,9 +1,6 @@
 import { getPageContent } from "@/lib/content";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 
-const ORG_DESCRIPTION =
-  "Independent, mission-driven radon education for South Lake Tahoe. Every figure links to a primary source.";
-
 // Question-shaped sections become FAQ entries; the answer text is the visible
 // section body (Google requires FAQ answers to appear on the page).
 export function faqSections() {
@@ -11,13 +8,14 @@ export function faqSections() {
 }
 
 export function JsonLd() {
+  const { meta } = getPageContent();
   const graph = [
     {
       "@type": "Organization",
       "@id": `${SITE_URL}/#org`,
       name: SITE_NAME,
       url: SITE_URL,
-      description: ORG_DESCRIPTION,
+      description: meta.organization,
     },
     {
       "@type": "WebSite",

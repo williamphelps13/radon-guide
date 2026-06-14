@@ -64,6 +64,12 @@ const FormsSchema = z.object({
 });
 
 export const PageContentSchema = z.object({
+  // SEO/social metadata. Lengths guarded to the search-result display windows.
+  meta: z.object({
+    title: z.string().nonempty().max(60), // ~60 incl. the "| Radon Guide" suffix
+    description: z.string().nonempty().max(160), // Google truncates ~155–160
+    organization: z.string().nonempty(), // Organization JSON-LD description
+  }),
   hero: z.object({
     eyebrow: z.string().nonempty(),
     headline: z.string().nonempty(),

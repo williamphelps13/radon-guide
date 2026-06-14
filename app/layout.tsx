@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Newsreader, Public_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
+import { getPageContent } from "@/lib/content";
 import "./globals.css";
 
 const sans = Public_Sans({
@@ -18,27 +19,28 @@ const heading = Newsreader({
   display: "swap",
 });
 
-const TITLE = "Radon in South Lake Tahoe — test your home";
-const DESCRIPTION =
-  "About half of tested South Lake Tahoe homes are above the EPA radon action level, vs. under 1% statewide. Every figure links to a primary source. Learn how to test your home.";
+const { meta } = getPageContent();
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: `${TITLE} | ${SITE_NAME}`, template: `%s | ${SITE_NAME}` },
-  description: DESCRIPTION,
+  title: {
+    default: `${meta.title} | ${SITE_NAME}`,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: meta.description,
   applicationName: SITE_NAME,
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: SITE_URL,
     siteName: SITE_NAME,
-    title: TITLE,
-    description: DESCRIPTION,
+    title: meta.title,
+    description: meta.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
+    title: meta.title,
+    description: meta.description,
   },
 };
 

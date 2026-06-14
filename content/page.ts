@@ -5,6 +5,13 @@ import type { PageContent } from "./schema";
  * the dropped Barton "9.4%" and "$11–20 per dollar" stats are deliberately absent.
  */
 export const PAGE: PageContent = {
+  meta: {
+    title: "Radon in South Lake Tahoe — test your home",
+    description:
+      "About half of tested South Lake Tahoe homes exceed the EPA radon action level — vs. under 1% statewide. See how to test yours, every figure sourced.",
+    organization:
+      "Independent, mission-driven radon education for South Lake Tahoe. Every figure links to a primary source.",
+  },
   hero: {
     eyebrow: "South Lake Tahoe radon",
     headline:
