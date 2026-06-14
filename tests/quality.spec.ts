@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { SITE_URL } from "@/lib/site";
+import { faqSections } from "@/components/json-ld";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -67,6 +68,24 @@ test.describe("seo", () => {
     const sitemap = await request.get("/sitemap.xml");
     expect(sitemap.ok()).toBeTruthy();
     expect(await sitemap.text()).toContain(SITE_URL);
+  });
+
+  test("JSON-LD structured data includes Organization and a FAQPage", async ({
+    page,
+  }) => {
+    const raw = await page
+      .locator('script[type="application/ld+json"]')
+      .first()
+      .textContent();
+    const data = JSON.parse(raw ?? "{}");
+    const nodes: { "@type": string; mainEntity?: unknown[] }[] =
+      data["@graph"] ?? [];
+    const types = nodes.map((n) => n["@type"]);
+    expect(types).toContain("Organization");
+    expect(types).toContain("FAQPage");
+    const faq = nodes.find((n) => n["@type"] === "FAQPage");
+    expect(faq?.mainEntity).toHaveLength(faqSections().length);
+    expect(faqSections().length).toBeGreaterThan(0);
   });
 });
 

@@ -7,6 +7,7 @@ import { RiskScale } from "@/components/risk-scale";
 import { TestingPath } from "@/components/testing-path";
 import { MitigationTable } from "@/components/mitigation-table";
 import { Footer } from "@/components/footer";
+import { JsonLd } from "@/components/json-ld";
 import { getPageContent } from "@/lib/content";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
 
   return (
     <main>
+      <JsonLd />
       {/* Funnel order (spec §5): hook → proof → is it me → how bad → fix → why unknown → act */}
       <Hero />
       <CredibilityStrip />
