@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { expectClientEvent } from "./helpers";
+import { content, expectClientEvent } from "./helpers";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -63,4 +63,15 @@ test("partnership form: empty submit shows an error", async ({ page }) => {
   await form.evaluate((f: HTMLFormElement) => (f.noValidate = true));
   await form.getByRole("button").click();
   await expect(page.getByTestId("partnership-error")).toBeVisible();
+});
+
+test("opening the derivation reveals the math and fires derivation_open", async ({
+  page,
+}) => {
+  await expectClientEvent(page, "derivation_open", async () => {
+    await page.getByTestId("derivation-trigger").click();
+  });
+  await expect(
+    page.getByText(content.derivation.body, { exact: true }),
+  ).toBeVisible();
 });

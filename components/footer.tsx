@@ -1,0 +1,40 @@
+import { getPageContent } from "@/lib/content";
+import { NewsletterForm } from "./newsletter-form";
+import { PartnershipForm } from "./partnership-form";
+import { CtaTest } from "./cta-test";
+import { FooterBeacon } from "./footer-beacon";
+
+export function Footer() {
+  const { forms } = getPageContent();
+  return (
+    <footer className="mx-auto mt-12 max-w-2xl px-5 pb-16">
+      <FooterBeacon />
+      <div className="mb-6">
+        <CtaTest location="footer" />
+      </div>
+      <div className="grid gap-8 sm:grid-cols-2">
+        <div>
+          <h3 className="text-base">{forms.newsletter.heading}</h3>
+          <div className="mt-2">
+            <NewsletterForm />
+          </div>
+        </div>
+        <div>
+          <h3 className="text-base">{forms.partnership.heading}</h3>
+          <div className="mt-2">
+            <PartnershipForm />
+          </div>
+        </div>
+      </div>
+      <nav className="mt-8 text-sm text-ink-500">
+        <a href="/privacy" className="underline">
+          Privacy
+        </a>{" "}
+        ·{" "}
+        <a href="/disclosure" className="underline">
+          Disclosure
+        </a>
+      </nav>
+    </footer>
+  );
+}
