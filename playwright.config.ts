@@ -23,5 +23,9 @@ export default defineConfig({
     url: baseURL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
+    // Expose the client-event test seam even under a production `build && start`
+    // server (NEXT_PUBLIC_* is inlined at build, so it must be set for the build).
+    // Never set this in real production — keeps the seam off there.
+    env: { NEXT_PUBLIC_RG_TEST: '1' },
   },
 });

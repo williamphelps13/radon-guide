@@ -13,8 +13,13 @@ export function track(e: AnalyticsEvent): void {
     e.name,
     "props" in e ? (e.props as Record<string, string>) : undefined,
   );
-  // Dev-only test seam: record client events for Playwright (zero prod overhead).
-  if (process.env.NODE_ENV !== "production" && typeof window !== "undefined") {
+  // Test seam: record client events for Playwright. On in dev, and in any build
+  // explicitly flagged for tests (so a CI `build && start` server still exposes it).
+  // Off in real production (NEXT_PUBLIC_RG_TEST unset) → zero overhead.
+  const testSeam =
+    process.env.NODE_ENV !== "production" ||
+    process.env.NEXT_PUBLIC_RG_TEST === "1";
+  if (testSeam && typeof window !== "undefined") {
     const w = window as unknown as { __rgEvents?: AnalyticsEvent[] };
     (w.__rgEvents ??= []).push(e);
   }
