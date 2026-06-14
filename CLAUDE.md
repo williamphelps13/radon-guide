@@ -2,11 +2,24 @@
 
 # Radon Guide — project conventions
 
-## Testing — Playwright, test-first
-- **Write the spec before the implementation.** Every rendered component and behavior gets a Playwright spec: failing test (RED) → minimal code (GREEN) → refactor. No component ships without a spec covering its content/behavior.
-- **DRY + data-driven.** Specs import the content layer via `tests/helpers.ts` (`@/lib/content`, `SOURCES`) and assert against it — never hardcode copy. Adding content extends coverage automatically. See `tests/credibility.spec.ts` and `tests/hero.spec.ts`.
-- **The credibility gate is sacred.** Every on-page stat must render inside a link to its registered **primary** source with `target="_blank"`. Enforced by `tests/credibility.spec.ts` + the `assertPrimaryTier` schema guard (`content/schema.ts`).
-- Projects: `mobile` (iPhone 13) + `desktop`. `npm run test` = schema guard + e2e. `webServer` runs `next dev` locally / `next build && next start` in CI.
+## Testing — Playwright, test-first (the accountability standard)
+
+**Five coverage layers.** The first two are DRY invariants that iterate `content/page.ts`, so new content is covered automatically:
+1. **Presence** — `tests/content.spec.ts` — every field in the content model renders on the page.
+2. **Source / credibility** — `tests/credibility.spec.ts` — every stat + cited source is primary-tier, linked, opens in a new tab. Use `expectPrimarySourceLink` from `tests/helpers.ts`.
+3. **Behavior** — `tests/behavior.spec.ts` — every interaction (CTA, forms, accordion) is tested. Client analytics events assert via `expectClientEvent` (the dev-only `window.__rgEvents` seam in `lib/analytics.ts`).
+4. **Structure / a11y** — `tests/quality.spec.ts` — exactly one `h1`; axe (`@axe-core/playwright`) finds no serious/critical violations; controls have accessible names.
+5. **Platform** — `tests/quality.spec.ts` — mobile: no horizontal overflow + key CTA visible; SEO: `<title>` + meta description.
+
+**Definition of done — no UI feature is complete until:**
+- [ ] Its content fields are asserted in `content.spec.ts` (DRY, from the model).
+- [ ] Any stat / cited source is covered by `credibility.spec.ts` (auto, via the model).
+- [ ] Its interactivity has a `behavior.spec.ts` test, **written first** (RED → GREEN).
+- [ ] Still exactly one `h1`; axe still passes; new controls have accessible names.
+- [ ] No new horizontal overflow at mobile width.
+- [ ] `npm run test` is green (schema guard + e2e on mobile + desktop).
+
+**Rules.** Test-first (write the failing spec before the code). DRY — specs read `content` / `SOURCES` from `tests/helpers.ts`; never hardcode copy. The node schema guard (`tests/schema.test.ts`) runs via `tsx`; Playwright runs `*.spec.ts` only. `webServer` runs `next dev` locally / `next build && next start` in CI.
 
 ## Next.js 16 — read the bundled docs first
 - This is non-standard Next (see `AGENTS.md`). Before writing any Next feature, read the matching guide in `node_modules/next/dist/docs/01-app/…`. Turbopack is default; Server Actions + `useActionState`/`useFormStatus`; async request APIs (`await cookies()/headers()/params`).

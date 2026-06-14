@@ -14,6 +14,7 @@
 > 1. **shadcn owns `app/globals.css` + `app/layout.tsx`** — we *edit* them, not create them. Done in Chunk 2 (commit `15ef1ec`): Newsreader/Public Sans fonts + a two-tier **hex** token system (primitives `--brand-*`/`--ink-*`/`--risk-*` in `:root` → shadcn semantics via `var()`). `lib/utils.ts` (`cn`) + `components/ui/*` already generated.
 > 2. **Token classes:** use `brand-NNN` (Blue Vivid), `ink-NNN` (Cool Grey), `risk-*` (ramp), and shadcn semantics (`bg-primary`, `text-foreground`, `border-border`). Wherever a snippet below shows `primary-NNN`, read it as `brand-NNN`.
 > 3. **Verify before writing:** Zod **v4** API (`z.email()` vs `z.string().email()`, `z.custom`) and any Next API against `node_modules/next/dist/docs/`.
+> 4. **Testing is by concern, test-first.** Specs live in `tests/{content,credibility,behavior,quality}.spec.ts` per `CLAUDE.md`'s 5-layer coverage standard (presence / source / behavior / a11y+structure / platform). The per-phase `funnel`/`forms`/`seo`/`mobile` snippets below are **folded into those files** — every new section/form adds its presence + behavior tests there, written first.
 
 ---
 
