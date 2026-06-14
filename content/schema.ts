@@ -78,6 +78,11 @@ export const PageContentSchema = z.object({
   sections: z.array(SectionSchema),
   riskScale: z.array(RiskLevelSchema).min(1),
   derivation: DerivationSchema,
+  testing: z.object({
+    heading: nonEmpty,
+    protocol: nonEmpty, // testing-protocol footnote
+    startHere: nonEmpty, // "start here" badge on the primary route
+  }),
   testingRoutes: z.array(TestingRouteSchema),
   mitigationRows: z.array(MitigationRowSchema),
   forms: FormsSchema,

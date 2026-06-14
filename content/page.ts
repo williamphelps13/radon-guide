@@ -76,6 +76,12 @@ export const PAGE: PageContent = {
     trigger: "See how we calculate the cigarette figure",
     body: "The average tested Tahoe home reads about 6–9 pCi/L (CGS SR-211). The EPA's cigarette-equivalence puts 4 pCi/L at roughly 8 cigarettes a day, so 6–9 pCi/L works out to about 12–18 a day. It's a lifetime-risk analogy, not a chemical-equivalence claim.",
   },
+  testing: {
+    heading: "Find out — test your home",
+    protocol:
+      "Test in winter, windows shut 12 hours before and during; place the detector on an interior wall, 20+ inches up.",
+    startHere: "start here",
+  },
   testingRoutes: [
     {
       status: "Never tested",

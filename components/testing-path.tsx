@@ -19,10 +19,10 @@ function withKitLink(action: string) {
 }
 
 export function TestingPath() {
-  const { testingRoutes } = getPageContent();
+  const { testingRoutes, testing } = getPageContent();
   return (
     <section id="test" className="mx-auto mt-10 max-w-2xl px-5">
-      <h2 className="text-xl">Find out — test your home</h2>
+      <h2 className="text-xl">{testing.heading}</h2>
       <ul className="mt-4 space-y-2">
         {testingRoutes.map((r) => (
           <li
@@ -42,16 +42,13 @@ export function TestingPath() {
             </span>
             {r.primary && (
               <span className="rounded bg-brand-50 px-2 py-0.5 text-xs font-medium text-brand-700">
-                start here
+                {testing.startHere}
               </span>
             )}
           </li>
         ))}
       </ul>
-      <p className="mt-3 text-xs text-ink-500">
-        Test in winter, windows shut 12 hours before and during; place the
-        detector on an interior wall, 20+ inches up.
-      </p>
+      <p className="mt-3 text-xs text-ink-500">{testing.protocol}</p>
     </section>
   );
 }

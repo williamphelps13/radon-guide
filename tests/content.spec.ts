@@ -56,6 +56,15 @@ test("every mitigation row renders all its fields", async ({ page }) => {
   }
 });
 
+test("the testing section heading and protocol render", async ({ page }) => {
+  await expect(
+    page.getByText(content.testing.heading, { exact: true }).first(),
+  ).toBeVisible();
+  await expect(
+    page.getByText(content.testing.protocol, { exact: true }).first(),
+  ).toBeVisible();
+});
+
 test("the derivation trigger renders", async ({ page }) => {
   await expect(
     page.getByText(content.derivation.trigger, { exact: true }).first(),
