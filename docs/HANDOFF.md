@@ -2,11 +2,13 @@
 
 > **Picking this up (fresh session or after compaction)?** Read this first, then `CLAUDE.md` (+ `AGENTS.md`), the spec, and `git log --oneline`. This is the living state of the build — it captures the *why* and *how* that a chat summary loses. Update it as you go.
 
-## Where we are (as of 2026-06-14, Chunk 6 complete — build is launch-ready)
+## Where we are (as of 2026-06-14, Chunk 6 complete — DEPLOYED & LIVE)
+
+> **Live:** https://radonguide.vercel.app (Vercel project `radon-guide`, GitHub `williamphelps13/radon-guide`, public). Pushes to `main` auto-deploy. Production env: `NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY` (Full access), `OWNER_EMAIL`. **Both email flows verified in production** (newsletter → Resend contact; partnership → owner inbox). Resend now uses Segments (no audience ID). Sending `FROM` is still `onboarding@resend.dev` — verify a domain before emailing non-owner recipients. **Still to do: enable Web Analytics in the Vercel dashboard.**
 - **Phases 0–11 implemented (deploy is owner-run).** Phases 0–4: `f17d4f4` → `6de858a`. Chunk 5 (Phases 5–7): after `ce31c53`. Chunk 6 (Phases 8–11): the SEO/legal/deploy-prep run after that.
 - Chunk 5 built the full funnel page + forms. **Chunk 6 made it shareable + launch-ready:** SEO metadata (title template, canonical, OG/Twitter), a **dynamic `next/og` social image** (`app/opengraph-image.tsx`), **sitemap + robots** (from `lib/site.ts` `SITE_URL`), **JSON-LD** (Organization + WebSite + FAQPage via `components/json-ld.tsx`), legal-page polish (effective date, data-request contact), conservative **security headers** (`next.config.ts`), and a **deploy runbook** (`docs/DEPLOY.md`).
 - **Coverage: full suite green — schema guard + 68 e2e (mobile + desktop); `npm run build` clean (all routes static).** Verified the client-event seam also fires under a production `build && start` server (CI parity).
-- **NEXT: actually deploy** — follow `docs/DEPLOY.md` (owner runs GitHub→Vercel→env vars→domain). Then the pre-promotion follow-ups below. After launch, content/copy tightening per spec voice + a real brand font/logo are the natural polish items.
+- **NEXT: enable Web Analytics** (Vercel → Analytics), then the pre-promotion follow-ups below. After launch, content/copy tightening per spec voice + a real brand font/logo are the natural polish items. A custom domain (`radonguide.org`) can be pointed via `docs/DEPLOY.md` step 7 when registered (update `NEXT_PUBLIC_SITE_URL` then).
 
 ### Chunk 6 decisions worth remembering
 - **One site-origin source of truth:** `lib/site.ts` `SITE_URL` (env `NEXT_PUBLIC_SITE_URL`, fallback prod host) feeds metadata, sitemap, robots, JSON-LD. No hardcoded host anywhere else.

@@ -29,8 +29,7 @@ Set for **Production** and **Preview**:
 | `OWNER_EMAIL` | your inbox | partnership inquiries land here |
 | `NEXT_PUBLIC_SITE_URL` | `https://radonguide.vercel.app` | drives metadata/sitemap/robots/JSON-LD |
 
-> Resend migrated Audiences → Segments, so **no `RESEND_AUDIENCE_ID` is needed** — newsletter signups
-> go to the account's default audience via `POST /contacts`.
+> No `RESEND_AUDIENCE_ID` is needed — newsletter signups go to your account's default audience.
 
 **Do NOT set** `RG_EMAIL_TRANSPORT` (leave unset so real Resend is used) and **do NOT set**
 `NEXT_PUBLIC_RG_TEST` (keeps the analytics test-seam off in production).

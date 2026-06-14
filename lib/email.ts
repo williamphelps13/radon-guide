@@ -27,9 +27,7 @@ export async function notifyOwner(subject: string, text: string): Promise<void> 
 
 export async function addToAudience(email: string): Promise<void> {
   if (isMock()) return;
-  // Resend migrated Audiences → Segments: POST /contacts adds to the account's
-  // default audience with no ID needed (segments are optional). The old
-  // `audienceId` field is deprecated.
+  // Adds the contact to the account's default audience.
   const { error } = await resend().contacts.create({ email });
   if (error) throw new Error(error.message);
 }
