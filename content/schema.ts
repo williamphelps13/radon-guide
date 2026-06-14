@@ -7,71 +7,68 @@ const sourceId = z.custom<SourceId>(
   (v) => typeof v === "string" && v in SOURCES,
 );
 
-// Required display/prose strings must be non-empty (catches accidental blanks).
-const nonEmpty = z.string().min(1);
-
 const StatSchema = z.object({
-  id: nonEmpty,
-  value: nonEmpty, // display string, e.g. "≈50%"
-  label: nonEmpty,
+  id: z.string().nonempty(),
+  value: z.string().nonempty(), // display string, e.g. "≈50%"
+  label: z.string().nonempty(),
   sourceId,
 });
 
 const SectionSchema = z.object({
-  id: nonEmpty,
-  title: nonEmpty,
+  id: z.string().nonempty(),
+  title: z.string().nonempty(),
   order: z.number().int(),
-  body: nonEmpty, // Markdown / plain prose
+  body: z.string().nonempty(), // Markdown / plain prose
 });
 
 const TestingRouteSchema = z.object({
-  status: nonEmpty,
-  action: nonEmpty,
+  status: z.string().nonempty(),
+  action: z.string().nonempty(),
   primary: z.boolean().optional(),
 });
 
 const MitigationRowSchema = z.object({
-  system: nonEmpty,
-  foundation: nonEmpty,
-  cost: nonEmpty,
-  reduction: nonEmpty,
+  system: z.string().nonempty(),
+  foundation: z.string().nonempty(),
+  cost: z.string().nonempty(),
+  reduction: z.string().nonempty(),
   sourceId,
 });
 
 // pCi/L bands for the RiskScale (the only place the reserved --risk-* ramp is used).
 const RiskLevelSchema = z.object({
-  range: nonEmpty, // e.g. "4–8"
-  label: nonEmpty, // e.g. "elevated · action level"
+  range: z.string().nonempty(), // e.g. "4–8"
+  label: z.string().nonempty(), // e.g. "elevated · action level"
   level: z.enum(["low", "moderate", "elevated", "high"]), // → --risk-* token
 });
 
 const DerivationSchema = z.object({
-  trigger: nonEmpty,
-  body: nonEmpty,
+  trigger: z.string().nonempty(),
+  body: z.string().nonempty(),
 });
 
 // Form copy lives in the model so the presence test stays DRY; roles is the
 // single source of truth the partnership Server Action derives its enum from.
 const FormsSchema = z.object({
   newsletter: z.object({
-    heading: nonEmpty,
-    cta: nonEmpty,
-    success: nonEmpty,
+    heading: z.string().nonempty(),
+    cta: z.string().nonempty(),
+    success: z.string().nonempty(),
   }),
   partnership: z.object({
-    heading: nonEmpty,
-    cta: nonEmpty,
-    success: nonEmpty,
-    roles: z.array(z.object({ value: nonEmpty, label: nonEmpty })).min(1),
+    heading: z.string().nonempty(),
+    cta: z.string().nonempty(),
+    success: z.string().nonempty(),
+    roles: z.array(z.object({ value: z.string().nonempty(), label: z.string().nonempty() })).min(1),
   }),
 });
 
 export const PageContentSchema = z.object({
   hero: z.object({
-    eyebrow: nonEmpty,
-    headline: nonEmpty,
-    body: nonEmpty,
-    caveat: nonEmpty,
+    eyebrow: z.string().nonempty(),
+    headline: z.string().nonempty(),
+    body: z.string().nonempty(),
+    caveat: z.string().nonempty(),
     sourceIds: z.array(sourceId).min(1),
   }),
   stats: z.array(StatSchema),
@@ -79,9 +76,9 @@ export const PageContentSchema = z.object({
   riskScale: z.array(RiskLevelSchema).min(1),
   derivation: DerivationSchema,
   testing: z.object({
-    heading: nonEmpty,
-    protocol: nonEmpty, // testing-protocol footnote
-    startHere: nonEmpty, // "start here" badge on the primary route
+    heading: z.string().nonempty(),
+    protocol: z.string().nonempty(), // testing-protocol footnote
+    startHere: z.string().nonempty(), // "start here" badge on the primary route
   }),
   testingRoutes: z.array(TestingRouteSchema),
   mitigationRows: z.array(MitigationRowSchema),

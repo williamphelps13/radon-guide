@@ -46,7 +46,9 @@ export function PartnershipForm() {
         id="partnership-role"
         name="role"
         required
-        className="h-9 rounded-md border border-ink-200 bg-white px-2 text-sm text-ink-900"
+        // Native select (best on mobile: uses the OS picker); styled to match the
+        // shadcn Input/Textarea around it.
+        className="h-8 w-full rounded-lg border border-input bg-transparent px-2.5 py-1 text-base outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 md:text-sm"
       >
         {partnership.roles.map((r) => (
           <option key={r.value} value={r.value}>

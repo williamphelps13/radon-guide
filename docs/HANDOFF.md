@@ -40,6 +40,7 @@
 - **Content-driven** — all copy in `content/page.ts`; `lib/content.ts` is the only seam; the credibility gate = every stat links to a **primary** source, new tab.
 - **Dropped stats (verification gate, spec §12):** Barton "9.4% / SLT lung cancer above CA average" — *refuted* by California Cancer Registry data (El Dorado 18.1 vs CA 19.7; SLT-zone 27.6 vs CA 36.8). "$11–20 per dollar" — untraceable to a primary source. Both omitted.
 - **The hook** — cigarette-risk lead, handled credibly with a "see how we calculate it" derivation + a visible "it's a risk analogy" caveat. Credibility-first throughout.
+- **Source chips = always-visible inline labels, NOT tooltips** (deliberate divergence from spec §components "Tooltip/Popover (source chips)"). `SourceChip` renders the citation name + ↗ as a visible link; chosen for mobile/touch + a11y (tooltips are poor on phones). The Tooltip primitive + `TooltipProvider` were scaffolded-but-unused and removed. Same reasoning keeps the partnership **role field a native `<select>`** (OS picker beats a JS dropdown on mobile), styled to match the shadcn inputs.
 
 ## Gotchas (save yourself the pain)
 - `create-next-app` refuses non-empty dirs → scaffold into `/tmp/rg-app` then `cp -a /tmp/rg-app/. ./`. Use **`--no-src-dir`** (NOT `--src-dir=false`, which *enables* src). No `--turbopack` flag (default).
