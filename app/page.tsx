@@ -3,6 +3,7 @@ import { CredibilityStrip } from "@/components/credibility-strip";
 import { Stat } from "@/components/stat-link";
 import { RiskScale } from "@/components/risk-scale";
 import { TestingPath } from "@/components/testing-path";
+import { MitigationTable } from "@/components/mitigation-table";
 import { getPageContent } from "@/lib/content";
 
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
       </section>
       <RiskScale />
       <TestingPath />
+      <MitigationTable />
     </main>
   );
 }
