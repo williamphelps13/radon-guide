@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: "Disclosure — Radon Guide" };
+export const metadata: Metadata = { title: "Disclosure" };
 
 export default function Disclosure() {
   return (
     <main className="mx-auto max-w-2xl px-5 py-12">
       <h1 className="text-2xl">Disclosure</h1>
+      <p className="mt-2 text-sm text-ink-500">Last updated June 14, 2026</p>
       <p className="mt-4 text-ink-700">
         Radon Guide is an independent, mission-driven project. We currently have
         no paid relationships and earn nothing from the testing options we

@@ -91,10 +91,13 @@ test.describe("seo", () => {
 
 test.describe("legal pages", () => {
   for (const path of ["/privacy", "/disclosure"]) {
-    test(`${path} resolves with exactly one h1`, async ({ page }) => {
+    test(`${path} resolves with one h1 and the templated title`, async ({
+      page,
+    }) => {
       const res = await page.goto(path);
       expect(res?.ok(), `${path} should not 404`).toBeTruthy();
       await expect(page.locator("h1")).toHaveCount(1);
+      await expect(page).toHaveTitle(/ \| Radon Guide$/);
     });
   }
 });
