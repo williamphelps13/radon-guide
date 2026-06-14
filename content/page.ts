@@ -66,6 +66,16 @@ export const PAGE: PageContent = {
       body: "Radon has no villain and no daily ritual to ban, and it threatens a geographically concentrated population with no organized lobby. We cite a primary source for every number on this page — click any figure to verify it on the EPA, WHO, CDC, CDPH, or CGS. Where the science is uncertain, we say so. This is an independent, mission-driven project with no paid relationships yet.",
     },
   ],
+  riskScale: [
+    { range: "< 2", label: "low", level: "low" },
+    { range: "2–4", label: "consider fixing", level: "moderate" },
+    { range: "4–8", label: "elevated · action level", level: "elevated" },
+    { range: "8+", label: "high", level: "high" },
+  ],
+  derivation: {
+    trigger: "See how we calculate the cigarette figure",
+    body: "The average tested Tahoe home reads about 6–9 pCi/L (CGS SR-211). The EPA's cigarette-equivalence puts 4 pCi/L at roughly 8 cigarettes a day, so 6–9 pCi/L works out to about 12–18 a day. It's a lifetime-risk analogy, not a chemical-equivalence claim.",
+  },
   testingRoutes: [
     {
       status: "Never tested",
@@ -111,4 +121,21 @@ export const PAGE: PageContent = {
       sourceId: "epa_citizens_guide",
     },
   ],
+  forms: {
+    newsletter: {
+      heading: "Get notified when free kits open",
+      cta: "Notify me",
+      success: "Thanks — we'll alert you when free kits open.",
+    },
+    partnership: {
+      heading: "Contractors & agents — partner with us",
+      cta: "Send",
+      success: "Thanks — we'll be in touch.",
+      roles: [
+        { value: "homeowner", label: "Homeowner" },
+        { value: "contractor", label: "Contractor" },
+        { value: "agent", label: "Buyer's agent" },
+      ],
+    },
+  },
 };

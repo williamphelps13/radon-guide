@@ -35,6 +35,36 @@ export const MitigationRowSchema = z.object({
   sourceId,
 });
 
+// pCi/L bands for the RiskScale (the only place the reserved --risk-* ramp is used).
+export const RiskLevelSchema = z.object({
+  range: z.string(), // e.g. "4–8"
+  label: z.string(), // e.g. "elevated · action level"
+  level: z.enum(["low", "moderate", "elevated", "high"]), // → --risk-* token
+});
+
+export const DerivationSchema = z.object({
+  trigger: z.string(),
+  body: z.string(),
+});
+
+// Form copy lives in the model so the presence test stays DRY; roles is the
+// single source of truth the partnership Server Action derives its enum from.
+export const FormsSchema = z.object({
+  newsletter: z.object({
+    heading: z.string(),
+    cta: z.string(),
+    success: z.string(),
+  }),
+  partnership: z.object({
+    heading: z.string(),
+    cta: z.string(),
+    success: z.string(),
+    roles: z
+      .array(z.object({ value: z.string(), label: z.string() }))
+      .min(1),
+  }),
+});
+
 export const PageContentSchema = z.object({
   hero: z.object({
     eyebrow: z.string(),
@@ -45,8 +75,11 @@ export const PageContentSchema = z.object({
   }),
   stats: z.array(StatSchema),
   sections: z.array(SectionSchema),
+  riskScale: z.array(RiskLevelSchema).min(1),
+  derivation: DerivationSchema,
   testingRoutes: z.array(TestingRouteSchema),
   mitigationRows: z.array(MitigationRowSchema),
+  forms: FormsSchema,
 });
 
 export type PageContent = z.infer<typeof PageContentSchema>;
