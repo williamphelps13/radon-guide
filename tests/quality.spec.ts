@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
+import { SITE_URL } from "@/lib/site";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -38,6 +39,17 @@ test.describe("seo", () => {
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       "content",
       /.+/,
+    );
+  });
+
+  test("canonical URL and Open Graph tags are present", async ({ page }) => {
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      "href",
+      new RegExp(SITE_URL.replace(/[.]/g, "\\.")),
+    );
+    await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+      "content",
+      /South Lake Tahoe/,
     );
   });
 });
