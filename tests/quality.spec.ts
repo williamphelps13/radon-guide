@@ -56,6 +56,18 @@ test.describe("seo", () => {
       /opengraph-image/,
     );
   });
+
+  test("robots.txt and sitemap.xml respond and reference the site URL", async ({
+    request,
+  }) => {
+    const robots = await request.get("/robots.txt");
+    expect(robots.ok()).toBeTruthy();
+    expect(await robots.text()).toContain(`${SITE_URL}/sitemap.xml`);
+
+    const sitemap = await request.get("/sitemap.xml");
+    expect(sitemap.ok()).toBeTruthy();
+    expect(await sitemap.text()).toContain(SITE_URL);
+  });
 });
 
 test.describe("legal pages", () => {
