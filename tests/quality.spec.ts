@@ -70,6 +70,14 @@ test.describe("seo", () => {
     expect(await sitemap.text()).toContain(SITE_URL);
   });
 
+  test("security headers are set on responses", async ({ request }) => {
+    const res = await request.get("/");
+    const headers = res.headers();
+    expect(headers["x-content-type-options"]).toBe("nosniff");
+    expect(headers["x-frame-options"]).toBe("SAMEORIGIN");
+    expect(headers["referrer-policy"]).toBe("strict-origin-when-cross-origin");
+  });
+
   test("JSON-LD structured data includes Organization and a FAQPage", async ({
     page,
   }) => {
