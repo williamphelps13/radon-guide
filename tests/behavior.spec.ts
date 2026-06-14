@@ -38,3 +38,29 @@ test("clicking the CDPH kit link fires test_kit_outbound", async ({ page }) => {
     await page.getByTestId("cdph-kit").click();
   });
 });
+
+test.describe("newsletter form", () => {
+  test("invalid email shows an error, never a success", async ({ page }) => {
+    const form = page.getByTestId("newsletter-form");
+    await form.getByLabel("Email").fill("not-an-email");
+    await form.evaluate((f: HTMLFormElement) => (f.noValidate = true));
+    await form.getByRole("button").click();
+    await expect(page.getByTestId("newsletter-error")).toBeVisible();
+    await expect(page.getByTestId("newsletter-ok")).toHaveCount(0);
+  });
+
+  test("a valid email shows the success message", async ({ page }) => {
+    const form = page.getByTestId("newsletter-form");
+    await form.getByLabel("Email").fill("valid@example.com");
+    await form.getByRole("button").click();
+    await expect(page.getByTestId("newsletter-ok")).toBeVisible();
+  });
+});
+
+test("partnership form: empty submit shows an error", async ({ page }) => {
+  const form = page.getByTestId("partnership-form");
+  // Bypass native required so the Server Action's validation is exercised.
+  await form.evaluate((f: HTMLFormElement) => (f.noValidate = true));
+  await form.getByRole("button").click();
+  await expect(page.getByTestId("partnership-error")).toBeVisible();
+});

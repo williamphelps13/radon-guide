@@ -4,6 +4,8 @@ import { Stat } from "@/components/stat-link";
 import { RiskScale } from "@/components/risk-scale";
 import { TestingPath } from "@/components/testing-path";
 import { MitigationTable } from "@/components/mitigation-table";
+import { NewsletterForm } from "@/components/newsletter-form";
+import { PartnershipForm } from "@/components/partnership-form";
 import { getPageContent } from "@/lib/content";
 
 export default function Home() {
@@ -23,6 +25,11 @@ export default function Home() {
       <RiskScale />
       <TestingPath />
       <MitigationTable />
+      {/* Temporary forms home until the Footer lands (task 7.1). */}
+      <section className="mx-auto mt-10 grid max-w-2xl gap-8 px-5 pb-16 sm:grid-cols-2">
+        <NewsletterForm />
+        <PartnershipForm />
+      </section>
     </main>
   );
 }
