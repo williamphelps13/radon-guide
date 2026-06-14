@@ -5,6 +5,8 @@ const baseURL = `http://localhost:${PORT}`;
 
 export default defineConfig({
   testDir: './tests',
+  // e2e specs only; the node schema guard (tests/schema.test.ts) runs via tsx, not Playwright.
+  testMatch: '**/*.spec.ts',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,

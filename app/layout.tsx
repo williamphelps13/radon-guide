@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Newsreader, Public_Sans } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const sans = Public_Sans({
@@ -33,6 +34,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <TooltipProvider>{children}</TooltipProvider>
+        <Analytics />
       </body>
     </html>
   );
