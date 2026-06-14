@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getPageContent } from "@/lib/content";
-import { SITE_NAME } from "@/lib/site";
+import { SITE_NAME, SITE_URL } from "@/lib/site";
 
 // Static branded social card, prerendered at build (the page is static).
 export const alt = "Radon in South Lake Tahoe — test your home";
@@ -14,6 +14,7 @@ const RISK_ELEVATED = "#f35627";
 
 export default function OpengraphImage() {
   const { hero } = getPageContent();
+  const host = new URL(SITE_URL).host;
   return new ImageResponse(
     (
       <div
@@ -69,7 +70,7 @@ export default function OpengraphImage() {
               background: RISK_ELEVATED,
             }}
           />
-          {SITE_NAME} · radonguide.org
+          {SITE_NAME} · {host}
         </div>
       </div>
     ),

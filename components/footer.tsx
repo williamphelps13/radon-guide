@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getPageContent } from "@/lib/content";
 import { NewsletterForm } from "./newsletter-form";
 import { PartnershipForm } from "./partnership-form";
@@ -27,13 +28,13 @@ export function Footer() {
         </div>
       </div>
       <nav className="mt-8 text-sm text-ink-500">
-        <a href="/privacy" className="underline">
+        <Link href="/privacy" className="underline">
           Privacy
-        </a>{" "}
+        </Link>{" "}
         ·{" "}
-        <a href="/disclosure" className="underline">
+        <Link href="/disclosure" className="underline">
           Disclosure
-        </a>
+        </Link>
       </nav>
     </footer>
   );

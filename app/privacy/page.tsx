@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = { title: "Privacy" };
 
@@ -21,15 +22,15 @@ export default function Privacy() {
       <p className="mt-4 text-ink-700">
         To access or delete the information you’ve given us, reach out through
         the partnership form on our{" "}
-        <a href="/" className="underline">
+        <Link href="/" className="underline">
           homepage
-        </a>{" "}
+        </Link>{" "}
         and we’ll take care of it.
       </p>
       <nav className="mt-8 text-sm text-ink-500">
-        <a href="/" className="underline">
+        <Link href="/" className="underline">
           ← Back to the guide
-        </a>
+        </Link>
       </nav>
     </main>
   );

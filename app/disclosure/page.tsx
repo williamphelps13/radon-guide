@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = { title: "Disclosure" };
 
@@ -19,9 +20,9 @@ export default function Disclosure() {
         medical or environmental-health advice.
       </p>
       <nav className="mt-8 text-sm text-ink-500">
-        <a href="/" className="underline">
+        <Link href="/" className="underline">
           ← Back to the guide
-        </a>
+        </Link>
       </nav>
     </main>
   );
