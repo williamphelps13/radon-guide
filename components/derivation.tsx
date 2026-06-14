@@ -16,9 +16,7 @@ export function Derivation() {
       className="mx-auto mt-4 max-w-2xl px-5"
       // Base UI passes the array of open item values; fire only on open.
       onValueChange={(value) => {
-        if (Array.isArray(value) ? value.length > 0 : value != null) {
-          track({ name: "derivation_open" });
-        }
+        if (value.length > 0) track({ name: "derivation_open" });
       }}
     >
       <AccordionItem value="calc">

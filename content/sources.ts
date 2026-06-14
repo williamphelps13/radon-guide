@@ -1,4 +1,4 @@
-export type SourceTier = "primary" | "secondary" | "tertiary";
+type SourceTier = "primary" | "secondary" | "tertiary";
 
 export interface Source {
   id: string;

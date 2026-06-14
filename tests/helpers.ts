@@ -3,7 +3,6 @@ import { getPageContent } from "@/lib/content";
 import { SOURCES, type SourceId } from "@/content/sources";
 
 export const content = getPageContent();
-export { SOURCES };
 
 /** Assert a locator resolves to a primary-source link that opens in a new tab. */
 export async function expectPrimarySourceLink(

@@ -1,6 +1,5 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Newsreader, Public_Sans } from "next/font/google";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { Analytics } from "@vercel/analytics/next";
 import { SITE_URL, SITE_NAME } from "@/lib/site";
 import "./globals.css";
@@ -43,6 +42,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = { themeColor: "#002159" }; // --brand-900
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -52,7 +53,7 @@ export default function RootLayout({
       className={`${sans.variable} ${heading.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <TooltipProvider>{children}</TooltipProvider>
+        {children}
         <Analytics />
       </body>
     </html>

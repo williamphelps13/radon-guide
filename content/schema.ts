@@ -7,70 +7,71 @@ const sourceId = z.custom<SourceId>(
   (v) => typeof v === "string" && v in SOURCES,
 );
 
-export const StatSchema = z.object({
-  id: z.string(),
-  value: z.string(), // display string, e.g. "≈50%"
-  label: z.string(),
+// Required display/prose strings must be non-empty (catches accidental blanks).
+const nonEmpty = z.string().min(1);
+
+const StatSchema = z.object({
+  id: nonEmpty,
+  value: nonEmpty, // display string, e.g. "≈50%"
+  label: nonEmpty,
   sourceId,
 });
 
-export const SectionSchema = z.object({
-  id: z.string(),
-  title: z.string(),
+const SectionSchema = z.object({
+  id: nonEmpty,
+  title: nonEmpty,
   order: z.number().int(),
-  body: z.string(), // Markdown / plain prose
+  body: nonEmpty, // Markdown / plain prose
 });
 
-export const TestingRouteSchema = z.object({
-  status: z.string(),
-  action: z.string(),
+const TestingRouteSchema = z.object({
+  status: nonEmpty,
+  action: nonEmpty,
   primary: z.boolean().optional(),
 });
 
-export const MitigationRowSchema = z.object({
-  system: z.string(),
-  foundation: z.string(),
-  cost: z.string(),
-  reduction: z.string(),
+const MitigationRowSchema = z.object({
+  system: nonEmpty,
+  foundation: nonEmpty,
+  cost: nonEmpty,
+  reduction: nonEmpty,
   sourceId,
 });
 
 // pCi/L bands for the RiskScale (the only place the reserved --risk-* ramp is used).
-export const RiskLevelSchema = z.object({
-  range: z.string(), // e.g. "4–8"
-  label: z.string(), // e.g. "elevated · action level"
+const RiskLevelSchema = z.object({
+  range: nonEmpty, // e.g. "4–8"
+  label: nonEmpty, // e.g. "elevated · action level"
   level: z.enum(["low", "moderate", "elevated", "high"]), // → --risk-* token
 });
 
-export const DerivationSchema = z.object({
-  trigger: z.string(),
-  body: z.string(),
+const DerivationSchema = z.object({
+  trigger: nonEmpty,
+  body: nonEmpty,
 });
 
 // Form copy lives in the model so the presence test stays DRY; roles is the
 // single source of truth the partnership Server Action derives its enum from.
-export const FormsSchema = z.object({
+const FormsSchema = z.object({
   newsletter: z.object({
-    heading: z.string(),
-    cta: z.string(),
-    success: z.string(),
+    heading: nonEmpty,
+    cta: nonEmpty,
+    success: nonEmpty,
   }),
   partnership: z.object({
-    heading: z.string(),
-    cta: z.string(),
-    success: z.string(),
-    roles: z
-      .array(z.object({ value: z.string(), label: z.string() }))
-      .min(1),
+    heading: nonEmpty,
+    cta: nonEmpty,
+    success: nonEmpty,
+    roles: z.array(z.object({ value: nonEmpty, label: nonEmpty })).min(1),
   }),
 });
 
 export const PageContentSchema = z.object({
   hero: z.object({
-    eyebrow: z.string(),
-    headline: z.string(),
-    body: z.string(),
-    caveat: z.string(),
+    eyebrow: nonEmpty,
+    headline: nonEmpty,
+    body: nonEmpty,
+    caveat: nonEmpty,
     sourceIds: z.array(sourceId).min(1),
   }),
   stats: z.array(StatSchema),
