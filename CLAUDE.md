@@ -1,5 +1,7 @@
 @AGENTS.md
 
+> 🚧 **Build in progress** — read `docs/HANDOFF.md` first for current state, the working methodology, key decisions + rationale, gotchas, and what's next. Then this file, the spec, and `git log`.
+
 # Radon Guide — project conventions
 
 ## Testing — Playwright, test-first (the accountability standard)
