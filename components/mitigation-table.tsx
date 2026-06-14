@@ -6,10 +6,9 @@ export function MitigationTable() {
   return (
     <section
       aria-label="Radon mitigation options"
-      className="mx-auto mt-10 max-w-2xl px-5"
+      className="mx-auto mt-4 max-w-2xl px-5"
     >
-      <h2 className="text-xl">If it&apos;s elevated — fix it</h2>
-      <div className="mt-4 overflow-x-auto">
+      <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="text-ink-500">
             <tr>
@@ -34,10 +33,6 @@ export function MitigationTable() {
       <div className="mt-3">
         <SourceChip sourceId="epa_citizens_guide" />
       </div>
-      <p className="mt-3 text-sm text-ink-700">
-        Sealing cracks alone, opening windows, and air purifiers do not work. A
-        2.5 pCi/L reading means monitor and retest — not panic.
-      </p>
     </section>
   );
 }
