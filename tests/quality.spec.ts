@@ -41,3 +41,13 @@ test.describe("seo", () => {
     );
   });
 });
+
+test.describe("legal pages", () => {
+  for (const path of ["/privacy", "/disclosure"]) {
+    test(`${path} resolves with exactly one h1`, async ({ page }) => {
+      const res = await page.goto(path);
+      expect(res?.ok(), `${path} should not 404`).toBeTruthy();
+      await expect(page.locator("h1")).toHaveCount(1);
+    });
+  }
+});
