@@ -2,11 +2,21 @@
 
 > **Picking this up (fresh session or after compaction)?** Read this first, then `CLAUDE.md` (+ `AGENTS.md`), the spec, and `git log --oneline`. This is the living state of the build — it captures the *why* and *how* that a chat summary loses. Update it as you go.
 
-## Where we are (as of 2026-06-14, through commit `6de858a`)
-- **Phases 0–4 complete + a full test-coverage practice established.** Commits `f17d4f4` → `6de858a`.
-- Built so far: Next 16 **no-`src`** scaffold · Playwright (mobile + desktop) · shadcn (**Base UI**, base-nova) · **Newsreader + Public Sans** fonts · **two-tier hex Palette 8** tokens · typed **content layer** (`content/` → `lib/content.ts`) + schema guard · analytics wrapper · **hero + credibility strip + source-link** components · the **data-driven credibility gate** · full **5-layer e2e coverage (30 tests green)**.
-- The page currently renders: hero (hook + source chips + CTA), credibility strip (3 stats), the us-deaths stat. The CTA `href="#test"` is a **dangling anchor** until the testing section exists (Chunk 5).
-- **NEXT: Chunk 5 = impl-plan Phases 5–7** — risk scale, testing path (CDPH-kit prominence), mitigation table, the two **Server-Action forms** (`z.email()`, `useActionState`/`useFormStatus`), and full **funnel-order page assembly**. Add each **test-first** per the CLAUDE.md "definition of done."
+## Where we are (as of 2026-06-14, Chunk 5 complete)
+- **Phases 0–7 complete + the full test-coverage practice.** Phases 0–4: commits `f17d4f4` → `6de858a`. Chunk 5 (Phases 5–7): the run of commits after `ce31c53`.
+- Built so far: Next 16 **no-`src`** scaffold · Playwright (mobile + desktop) · shadcn (**Base UI**, base-nova) · **Newsreader + Public Sans** fonts · **two-tier hex Palette 8** tokens · typed **content layer** (`content/` → `lib/content.ts`) + schema guard · client + **typed server** analytics wrappers · **hero, credibility strip, source-link, RiskScale, TestingPath (+KitLink), MitigationTable, Section, Derivation, Footer (+beacon)** · two **Server-Action forms** (newsletter + partnership) with a **mockable email transport** · **privacy + disclosure** stubs · **full funnel-order page** assembled.
+- The page now renders the complete funnel: hero → credibility strip → "is my home" → "how bad" (+us-deaths stat) → derivation → risk scale → testing path → fix-it + mitigation table → "why unknown" → footer (both forms + CTA). The hero CTA `#test` anchor now resolves.
+- **Coverage: full suite green — schema guard + 62 e2e (mobile + desktop); `npm run build` clean (all routes static).**
+- **NEXT: Chunk 6 = impl-plan Phases 8–11** — SEO metadata/OG + sitemap/robots (Phase 8), legal-page *polish* (Phase 9; stubs already exist), full-suite + manual Resend happy-path (Phase 10), deploy to Vercel (Phase 11).
+
+### Chunk 5 decisions worth remembering (deltas + accepted risks)
+- **Content model grew** (per CLAUDE.md "all copy is typed data"): added `riskScale`, `derivation`, `forms` to `content/{schema,page}.ts`; `content.spec.ts` now iterates them, so they're presence-covered automatically.
+- **Single source of truth for roles:** the partnership Server Action derives its `z.enum` from `content.forms.partnership.roles` — the select and validation can't drift.
+- **Email transport seam:** `lib/email.ts` honors `RG_EMAIL_TRANSPORT=mock` (set in `.env.local`) to resolve without calling Resend, so the **form success path is CI-testable** (not just validation/honeypot). For the real happy-path, unset it (or set `resend`) with real keys — manual verify (Phase 10).
+- **A11y beyond axe:** form results use `role="status"` `aria-live="polite"`; inputs use visible `<Label htmlFor>` (axe wouldn't have caught either gap).
+- **Risk ramp stays reserved for pCi/L** — form feedback uses semantic tokens (`text-destructive`, `text-brand-700`), never `risk-*`.
+- **ACCEPTED RISK (revisit before promotion):** the two public Server Actions are protected by the **honeypot only** — no rate limiting / CAPTCHA. Fine for low-traffic v1; add durable rate limiting (needs KV/Upstash) before driving traffic. Newsletter is **single opt-in**.
+- **Flagged for CI:** the client-event test seam (`window.__rgEvents`) is gated to `NODE_ENV !== 'production'`. Local e2e uses `next dev` (non-prod) so it works; a CI `build && start` server is production → seam off. Gate it on a test env flag before running behavior specs in CI.
 
 ## How we work (the methodology — this is the "smoothness," keep it)
 1. **Verify-then-execute loop.** Before each chunk: enter **plan mode**, verify the chunk's commands/APIs against the bundled Next 16 docs (`node_modules/next/dist/docs/01-app/…`) + library docs, write the chunk plan to the plan file, `ExitPlanMode` for approval, then execute, then re-enter plan mode for the next chunk. This loop caught the phantom `--src-dir=false` flag, Next 15→16, shadcn=Base UI + the globals.css collision, and Zod 4 `z.email()`.

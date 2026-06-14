@@ -33,3 +33,49 @@ test("every risk-scale band renders its range and label", async ({ page }) => {
     await expect(page.getByText(band.label, { exact: true }).first()).toBeVisible();
   }
 });
+
+test("every content section renders its title and body", async ({ page }) => {
+  for (const s of content.sections) {
+    await expect(page.getByText(s.title, { exact: true }).first()).toBeVisible();
+    await expect(page.getByText(s.body, { exact: true }).first()).toBeVisible();
+  }
+});
+
+test("every testing route renders its status and action", async ({ page }) => {
+  for (const r of content.testingRoutes) {
+    await expect(page.getByText(r.status, { exact: true }).first()).toBeVisible();
+    await expect(page.getByText(r.action, { exact: true }).first()).toBeVisible();
+  }
+});
+
+test("every mitigation row renders all its fields", async ({ page }) => {
+  for (const m of content.mitigationRows) {
+    for (const field of [m.system, m.foundation, m.cost, m.reduction]) {
+      await expect(page.getByText(field, { exact: true }).first()).toBeVisible();
+    }
+  }
+});
+
+test("the derivation trigger renders", async ({ page }) => {
+  await expect(
+    page.getByText(content.derivation.trigger, { exact: true }).first(),
+  ).toBeVisible();
+});
+
+test("both form headings and CTAs render", async ({ page }) => {
+  const { newsletter, partnership } = content.forms;
+  for (const text of [
+    newsletter.heading,
+    partnership.heading,
+    newsletter.cta,
+    partnership.cta,
+  ]) {
+    await expect(page.getByText(text, { exact: true }).first()).toBeVisible();
+  }
+  // Role labels render as <option>s in the partnership select.
+  for (const role of partnership.roles) {
+    await expect(
+      page.locator(`option[value="${role.value}"]`),
+    ).toHaveText(role.label);
+  }
+});
