@@ -51,6 +51,10 @@ test.describe("seo", () => {
       "content",
       /South Lake Tahoe/,
     );
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+      "content",
+      /opengraph-image/,
+    );
   });
 });
 
