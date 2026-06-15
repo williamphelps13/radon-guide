@@ -23,6 +23,8 @@
 
 **Rules.** Test-first (write the failing spec before the code). DRY — specs read `content` / `SOURCES` from `tests/helpers.ts`; never hardcode copy. The node schema guard (`tests/schema.test.ts`) runs via `tsx`; Playwright runs `*.spec.ts` only. `webServer` runs `next dev` locally / `next build && next start` in CI.
 
+**Gate on the production build (dev-flake gotcha).** Plain `npm run test` uses `next dev`, whose on-demand route compilation makes a *cold* server flake on webkit/mobile: a `<Link>`'s prefetch of the `/` RSC payload can fail mid-`goto` and fall back to a hard nav that interrupts the test (seen on the legal pages). It's a dev artifact, not a defect — warm reruns and CI pass. Per Next + Playwright best practice, trust the production gate: for a deterministic run use **`CI=1 npm run test`** (`build && start` + the single retry). Don't patch app behavior (e.g. `prefetch={false}`) to satisfy a dev-only flake, and keep retries CI-only by design so real flakiness stays visible locally.
+
 ## Next.js 16 — read the bundled docs first
 - This is non-standard Next (see `AGENTS.md`). Before writing any Next feature, read the matching guide in `node_modules/next/dist/docs/01-app/…`. Turbopack is default; Server Actions + `useActionState`/`useFormStatus`; async request APIs (`await cookies()/headers()/params`).
 
