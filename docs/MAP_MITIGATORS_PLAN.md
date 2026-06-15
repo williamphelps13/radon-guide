@@ -86,6 +86,18 @@ CDPH columns are: **Last name · First name · Mitigation Certificate # · Expir
 - **Size:** tiny — only a handful of mitigation-certified providers. A 2-pin map is
   marginal, so NV likely launches **list-first**, map optional.
 
+> ❌ **Jurisdiction (verified 2026-06-15) — NV is out of scope for the SLT mission.**
+> Mitigation authorization follows the *home's* state. South Lake Tahoe is entirely in
+> California (El Dorado County; the NV side is Stateline/Douglas County), so an SLT home
+> needs a **CDPH-certified, CA-licensed** mitigator. A NV-only contractor isn't authorized
+> to work in CA, and CA↔NV reciprocity only waives a trade exam — it still requires
+> obtaining a *separate* CA license. Border pros who legitimately serve Tahoe already appear
+> on the **CA** list (some NV-based but CA-licensed, e.g. Denny in Minden, NV on CA lic
+> 241944). A standalone NV roster would only add people who *can't* work in SLT. **Chunk D
+> retired** (see chunk sequence). Sources: [CDPH Radon Services Certification](https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon/Radon-Services-Certification.aspx);
+> [CSLB Reciprocity](https://www.cslb.ca.gov/Contractors/Applicants/Reciprocity/General_Reciprocity_Information.aspx) +
+> [who must be licensed](https://www.cslb.ca.gov/contractors/applicants/contractors_license/exam_application/before_applying_for_license.aspx).
+
 Add to `content/sources.ts`:
 ```ts
 unr_radon: {
@@ -197,20 +209,27 @@ const MitigatorSchema = z.object({
    both Playwright chromium + webkit; CI-mode (prod server) e2e **92/92** ✓; schema guard, tsc,
    eslint, build all ✓. (Note: local `next dev` can show a webkit RSC-prefetch flake on the
    legal pages — a dev-server artifact, green under the production CI config.)
-4. **Chunk D — Nevada.** Add NV data; decide list-only vs map given the tiny count.
+4. ~~**Chunk D — Nevada.**~~ ❌ **RETIRED (2026-06-15, owner-approved).** Verified that a
+   NV-only mitigator can't legally work on a California (South Lake Tahoe) home, and the
+   Tahoe-basin pros who *can* are already on the CA list (see the "Jurisdiction" note in the
+   Nevada section). A standalone NV roster serves *Nevada* homeowners — a different audience
+   than this SLT-focused product — so it's dropped. Revisit only if scope deliberately
+   expands to Nevada homes; if so, gate it behind a jurisdiction label and a "NV cert ≠ CA
+   authorization" warning. `unr_radon` is therefore **not** being added.
 
 ## Open questions / TODOs
 - [x] ~~Verify the CDPH mitigators PDF fields + count~~ — done (owner paste, 2026-06-15): 12 unique, no location field.
 - [x] ~~Decide location-enrichment source~~ → **CSLB license lookup** (owner, 2026-06-15).
 - [x] ~~Pull CSLB locations for the 12~~ → done via headless Playwright → `docs/mitigators-ca-raw.json`.
 - [x] ~~Map vs list~~ → **list first** (shippable), map as a later enhancement (owner, 2026-06-15).
-- [ ] Decide which phone to display: **CDPH cert phone** vs CSLB business phone (they differ).
-- [ ] Decide how to convey **service area vs office location** so pins aren't misleading.
-- [ ] Geocode the 12 street addresses → lat/lng (US Census Geocoder) for the eventual map.
-- [ ] Confirm MapLibre GL JS works cleanly under Next 16 / Turbopack (read bundled docs; SSR-guard the client component).
-- [ ] Where does the map live — its own route/section, or appended to the existing funnel page? (Affects the one-`h1` rule.)
-- [ ] OpenFreeMap attribution placement (required: "OpenFreeMap © OpenMapTiles Data from OpenStreetMap").
-- [ ] Given only **12 CA + a few NV** office-points, sanity-check that a map adds enough over a sortable list to justify the dependency.
+- [x] ~~Which phone to display~~ → **CSLB business line** (owner, 2026-06-15).
+- [x] ~~Convey service area vs office location~~ → done: list caption + "serves California" note + the "pins mark each office, not service area" line on `/mitigators` (Chunk B/C).
+- [x] ~~Geocode the 12~~ → done via `scripts/geocode-mitigators.mjs` (Chunk A).
+- [x] ~~MapLibre under Next 16 / Turbopack~~ → confirmed; dynamic-imported in `useEffect`, WebGL works in Playwright chromium + webkit (Chunk C).
+- [x] ~~Where does the map live~~ → dedicated `/mitigators` route (Chunk B/C).
+- [x] ~~OpenFreeMap attribution~~ → `AttributionControl` with the required text (Chunk C).
+- [x] ~~Does a map add enough vs a list~~ → yes for CA (12 points spread statewide); shipped as enhancement over the list.
+- [x] ~~Nevada / South Lake Tahoe jurisdiction~~ → **Chunk D retired** (owner, 2026-06-15): a NV-only mitigator can't legally work on a CA (SLT) home; verified vs CDPH + CSLB.
 
 ## Research provenance
 Five-angle deep-research pass on 2026-06-15 (data sources, NRPP/NRSB directories,
