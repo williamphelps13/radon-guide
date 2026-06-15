@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import { content, expectPrimarySourceLink } from "./helpers";
+import { content, mitigators, expectPrimarySourceLink } from "./helpers";
 
 // Source invariant: every stat and every cited hero source renders inside a
 // link to its registered PRIMARY source, opening in a new tab.
@@ -41,11 +41,23 @@ test.describe("mitigators page sources", () => {
     await page.goto("/mitigators");
   });
 
-  for (const sourceId of ["cdph_radon", "cslb"] as const) {
+  // DRY: every distinct source a mitigator cites must render as a primary link
+  // (auto-covers a future row that introduces a new/non-primary source).
+  const rosterSources = [
+    ...new Set(mitigators.mitigators.map((m) => m.sourceId)),
+  ];
+  for (const sourceId of rosterSources) {
     test(`mitigator source "${sourceId}" is a primary new-tab link`, async ({
       page,
     }) => {
       await expectPrimarySourceLink(page, { sourceId });
     });
   }
+
+  // CSLB is the page-level location-provenance citation (not a per-row field).
+  test('the "cslb" location source is a primary new-tab link', async ({
+    page,
+  }) => {
+    await expectPrimarySourceLink(page, { sourceId: "cslb" });
+  });
 });

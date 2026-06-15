@@ -2,10 +2,12 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-// Divergence from upstream shadcn: cells do NOT use `whitespace-nowrap`. This is
-// a mobile-first site with a hard no-horizontal-overflow rule, and `<main>` is a
-// flex item (body is `flex flex-col`), so nowrap content forces the page wider
-// than the viewport. Letting cells wrap keeps small tables within mobile width.
+// Divergences from upstream shadcn (kept minimal, here for the whole project):
+// 1. Cells do NOT use `whitespace-nowrap` — this is a mobile-first site with a
+//    hard no-horizontal-overflow rule, and `<main>` is a flex item (body is
+//    `flex flex-col`), so nowrap content forces the page wider than the viewport.
+// 2. Headers use `text-muted-foreground` (not `text-foreground`) so the header
+//    row keeps a visual hierarchy over the data rows.
 
 function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
@@ -77,7 +79,7 @@ function TableHead({ className, ...props }: React.ComponentProps<"th">) {
     <th
       data-slot="table-head"
       className={cn(
-        "text-foreground h-10 px-2 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
+        "text-muted-foreground h-10 px-2 text-left align-middle font-medium [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
         className,
       )}
       {...props}

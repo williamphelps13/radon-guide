@@ -70,20 +70,28 @@ const MitigatorSchema = z.object({
   name: z.string().nonempty(), // "First Last"
   business: z.string().optional(), // company; omitted for sole individuals
   certId: z.string().nonempty(), // CDPH mitigation cert # — the de-dupe key
-  roster: z.enum(["CA", "NV"]), // whose certified list they're on
   city: z.string().nonempty(), // office city (CSLB)
-  state: z.enum(["CA", "NV"]), // office state (can differ from roster)
+  state: z.enum(["CA", "NV"]), // office state (a CA-certified pro can be NV-based)
   zip: z.string().optional(),
   phone: z.string().optional(), // CSLB business line, display form
   caLicense: z.string().optional(), // CA contractor license #
-  lat: z.number(),
-  lng: z.number(),
+  // Baked geocode, bounded to the CA + NV box so a transposed digit (which would
+  // otherwise drop a pin in the ocean) fails the schema guard instead of shipping.
+  lat: z.number().min(32).max(42.5),
+  lng: z.number().min(-125).max(-114),
   precise: z.boolean(), // true = street-level geocode; false = city centroid
   sourceId, // the certified-list source backing the listing
 });
 
 export const MitigatorsSchema = z.object({
   updatedAt: z.string().nonempty(), // these certified lists are periodic snapshots
+  // Page copy lives in the model (not inline JSX) so the presence + voice gates cover it.
+  copy: z.object({
+    title: z.string().nonempty(), // <title> (templated with the site name)
+    heading: z.string().nonempty(), // the h1
+    intro: z.string().nonempty(),
+    mapNote: z.string().nonempty(), // office-vs-service-area caveat under the map
+  }),
   mitigators: z.array(MitigatorSchema).min(1),
 });
 

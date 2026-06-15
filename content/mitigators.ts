@@ -13,12 +13,19 @@ import type { Mitigators } from "./schema";
  */
 export const MITIGATORS = {
   updatedAt: "2026-06-15",
+  copy: {
+    title: "Find a California-Certified Mitigator",
+    heading: "Find a California-certified radon mitigator",
+    intro:
+      "If a test comes back at or above 4 pCi/L, the next step is hiring a certified mitigator. California regulates the work itself: a mitigator must hold a national certification and a California contractor license, and be on the CDPH certified list. Everyone below clears that bar, so they can legally mitigate a California home, South Lake Tahoe included.",
+    mapNote:
+      "Pins mark each contractor's office, not their service area or where they're licensed. A few are based in Nevada but certified for California. Call to confirm they cover your area.",
+  },
   mitigators: [
     {
       name: "Scott Cole",
       business: "Advanced Construction Technologies LLC",
       certId: "115293",
-      roster: "CA",
       city: "Irvine",
       state: "CA",
       zip: "92618",
@@ -33,7 +40,6 @@ export const MITIGATORS = {
       name: "Norman Denny",
       business: "College City Construction",
       certId: "106142",
-      roster: "CA",
       city: "Minden",
       state: "NV",
       zip: "89423",
@@ -48,7 +54,6 @@ export const MITIGATORS = {
       name: "Cameron Dopke",
       business: "Environmental Inspections & Construction Inc",
       certId: "112346",
-      roster: "CA",
       city: "Markleeville",
       state: "CA",
       zip: "96120",
@@ -62,7 +67,6 @@ export const MITIGATORS = {
     {
       name: "Fred Ellrott",
       certId: "101023",
-      roster: "CA",
       city: "Somis",
       state: "CA",
       zip: "93066",
@@ -77,7 +81,6 @@ export const MITIGATORS = {
       name: "Daniel Frayman",
       business: "Prosirv Inc",
       certId: "114455",
-      roster: "CA",
       city: "Woodland Hills",
       state: "CA",
       zip: "91367",
@@ -92,7 +95,6 @@ export const MITIGATORS = {
       name: "Jason Gregory",
       business: "Jason Gregory Inc",
       certId: "107970",
-      roster: "CA",
       city: "Thousand Oaks",
       state: "CA",
       zip: "91360",
@@ -106,7 +108,6 @@ export const MITIGATORS = {
     {
       name: "Jordan Heichman",
       certId: "106156",
-      roster: "CA",
       city: "Placerville",
       state: "CA",
       zip: "95667",
@@ -121,7 +122,6 @@ export const MITIGATORS = {
       name: "John Henderson",
       business: "Apex Building & Restoration Inc",
       certId: "108871",
-      roster: "CA",
       city: "Santa Barbara",
       state: "CA",
       zip: "93105",
@@ -136,7 +136,6 @@ export const MITIGATORS = {
       name: "Eddie Huchingson",
       business: "Radon Solutions California LLC",
       certId: "107621",
-      roster: "CA",
       city: "Thousand Oaks",
       state: "CA",
       zip: "91360",
@@ -151,7 +150,6 @@ export const MITIGATORS = {
       name: "Peter Mandel",
       business: "MG Remediation Inc",
       certId: "104696",
-      roster: "CA",
       city: "San Leandro",
       state: "CA",
       zip: "94577",
@@ -166,7 +164,6 @@ export const MITIGATORS = {
       name: "Edward Riley",
       business: "Tahoe Mold and Water Inc",
       certId: "106415",
-      roster: "CA",
       city: "Tahoe City",
       state: "CA",
       zip: "96145",
@@ -181,7 +178,6 @@ export const MITIGATORS = {
       name: "Iurii Zharkov",
       business: "A1 Construction and Restoration Inc",
       certId: "115915",
-      roster: "CA",
       city: "Beverly Hills",
       state: "CA",
       zip: "90212",

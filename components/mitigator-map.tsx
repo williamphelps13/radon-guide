@@ -3,22 +3,23 @@
 import { useEffect, useRef, useState } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { track } from "@/lib/analytics";
+import { telHref } from "@/lib/utils";
 import type { Mitigator } from "@/content/schema";
 
-const escapeHtml = (s: string) =>
-  s.replace(
-    /[&<>"']/g,
-    (c) =>
-      ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;",
-      })[c] as string,
-  );
-
-const telHref = (phone: string) => `tel:+1${phone.replace(/\D/g, "")}`;
+/** Build popup content as DOM nodes (textContent auto-escapes — no raw HTML). */
+function popupContent(m: Mitigator): HTMLElement {
+  const root = document.createElement("div");
+  const name = document.createElement("strong");
+  name.textContent = m.name;
+  root.append(name, document.createElement("br"), `${m.city}, ${m.state}`);
+  if (m.phone) {
+    const link = document.createElement("a");
+    link.href = telHref(m.phone);
+    link.textContent = m.phone;
+    root.append(document.createElement("br"), link);
+  }
+  return root;
+}
 
 /**
  * Progressive enhancement over the list: a MapLibre + OpenFreeMap map of the
@@ -67,14 +68,12 @@ export function MitigatorMap({ mitigators }: { mitigators: Mitigator[] }) {
           el.setAttribute("aria-label", m.name);
           el.className =
             "block size-4 cursor-pointer rounded-full border-2 border-white bg-brand-600 shadow focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700";
-          const popup = new maplibregl.Popup({ offset: 14 }).setHTML(
-            `<strong>${escapeHtml(m.name)}</strong>` +
-              `<br>${escapeHtml(m.city)}, ${m.state}` +
-              (m.phone
-                ? `<br><a href="${telHref(m.phone)}">${escapeHtml(m.phone)}</a>`
-                : ""),
+          const popup = new maplibregl.Popup({ offset: 14 }).setDOMContent(
+            popupContent(m),
           );
-          el.addEventListener("click", () =>
+          // Fire only on open (the marker click toggles, so an element-click
+          // listener would also count the click that dismisses the popup).
+          popup.on("open", () =>
             track({ name: "map_pin_open", props: { state: m.state } }),
           );
           new maplibregl.Marker({ element: el })

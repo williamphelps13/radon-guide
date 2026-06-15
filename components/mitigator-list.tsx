@@ -1,4 +1,5 @@
-import { getMitigators } from "@/lib/content";
+import type { Mitigator } from "@/content/schema";
+import { telHref } from "@/lib/utils";
 import { SourceChip } from "./stat-link";
 import {
   Table,
@@ -10,10 +11,13 @@ import {
   TableRow,
 } from "./ui/table";
 
-const telHref = (phone: string) => `tel:+1${phone.replace(/\D/g, "")}`;
-
-export function MitigatorList() {
-  const { mitigators, updatedAt } = getMitigators();
+export function MitigatorList({
+  mitigators,
+  updatedAt,
+}: {
+  mitigators: Mitigator[];
+  updatedAt: string;
+}) {
   return (
     <section aria-label="Certified radon mitigators in California">
       <Table>

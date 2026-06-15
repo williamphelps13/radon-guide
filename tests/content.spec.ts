@@ -107,15 +107,30 @@ test.describe("mitigators page", () => {
     await expect(page.locator("h1")).toHaveCount(1);
   });
 
-  test("every mitigator renders its name, location, and phone", async ({
+  test("renders the page copy from the model", async ({ page }) => {
+    for (const text of [
+      mitigators.copy.heading,
+      mitigators.copy.intro,
+      mitigators.copy.mapNote,
+    ]) {
+      await expect(page.getByText(text, { exact: true }).first()).toBeVisible();
+    }
+  });
+
+  test("every mitigator renders its name, location, and phone in the list", async ({
     page,
   }) => {
+    // Scope to the list so a city/name is asserted in its row, not anywhere on
+    // the page (the intro prose and map popups also contain these strings).
+    const list = page.locator(
+      'section[aria-label="Certified radon mitigators in California"]',
+    );
     for (const m of mitigators.mitigators) {
-      await expect(page.getByText(m.name, { exact: true }).first()).toBeVisible();
-      await expect(page.getByText(m.city, { exact: false }).first()).toBeVisible();
+      await expect(list.getByText(m.name, { exact: true }).first()).toBeVisible();
+      await expect(list.getByText(m.city, { exact: false }).first()).toBeVisible();
       if (m.phone) {
         await expect(
-          page.getByRole("link", { name: m.phone }).first(),
+          list.getByRole("link", { name: m.phone }).first(),
         ).toBeVisible();
       }
     }
