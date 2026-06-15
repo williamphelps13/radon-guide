@@ -187,8 +187,16 @@ const MitigatorSchema = z.object({
    date. Refactored `mitigation-table.tsx` onto the primitive and linked it to `/mitigators`.
    Test-first across content/credibility/quality specs (RED→GREEN). Verified: schema guard ✓,
    tsc ✓, eslint ✓, build ✓ (static), e2e 88/88 ✓.
-3. **Chunk C — map enhancement.** MapLibre + OpenFreeMap client component layered
-   over the list; behavior test for marker/popup; mobile + axe checks.
+3. ~~**Chunk C — map enhancement.**~~ ✅ **DONE (2026-06-15).** `components/mitigator-map.tsx`
+   (`'use client'`, maplibre dynamic-imported in `useEffect` so SSR never touches it; falls
+   back to list-only if WebGL is absent). MapLibre + OpenFreeMap "bright" style; `<button>`
+   HTML markers (accessible name = mitigator name) → popups with name/city/`tel:` phone;
+   `NavigationControl` + `AttributionControl` (required OpenFreeMap text); fires a typed
+   `map_pin_open` analytics event. Placed above the list on `/mitigators` (one `h1` kept).
+   Test-first behavior specs (marker count, click → popup + event). Verified WebGL works in
+   both Playwright chromium + webkit; CI-mode (prod server) e2e **92/92** ✓; schema guard, tsc,
+   eslint, build all ✓. (Note: local `next dev` can show a webkit RSC-prefetch flake on the
+   legal pages — a dev-server artifact, green under the production CI config.)
 4. **Chunk D — Nevada.** Add NV data; decide list-only vs map given the tiny count.
 
 ## Open questions / TODOs

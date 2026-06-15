@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getMitigators } from "@/lib/content";
+import { MitigatorMap } from "@/components/mitigator-map";
 import { MitigatorList } from "@/components/mitigator-list";
 
 export const metadata: Metadata = {
@@ -10,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default function MitigatorsPage() {
+  const { mitigators } = getMitigators();
   return (
     <main className="mx-auto max-w-2xl px-5 py-12">
       <h1 className="text-2xl">Find a certified radon mitigator</h1>
@@ -19,6 +22,13 @@ export default function MitigatorsPage() {
         national certification and a state contractor license. Everyone below is
         on the CDPH certified list.
       </p>
+      <div className="mt-8">
+        <MitigatorMap mitigators={mitigators} />
+        <p className="mt-2 text-xs text-ink-500">
+          Pins mark each contractor&rsquo;s office, not their service area. Call
+          to confirm they cover your area.
+        </p>
+      </div>
       <div className="mt-8">
         <MitigatorList />
       </div>

@@ -5,7 +5,8 @@ export type AnalyticsEvent =
   | { name: "test_kit_outbound"; props: { vendor: "cdph" } }
   | { name: "derivation_open"; props?: undefined }
   | { name: "reached_testing"; props?: undefined }
-  | { name: "reached_footer"; props?: undefined };
+  | { name: "reached_footer"; props?: undefined }
+  | { name: "map_pin_open"; props: { state: "CA" | "NV" } };
 
 /** Typed wrapper around Vercel Web Analytics custom events (single source of event names). */
 export function track(e: AnalyticsEvent): void {

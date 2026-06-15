@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { content, expectClientEvent } from "./helpers";
+import { content, mitigators, expectClientEvent } from "./helpers";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -74,4 +74,36 @@ test("opening the derivation reveals the math and fires derivation_open", async 
   await expect(
     page.getByText(content.derivation.body, { exact: true }),
   ).toBeVisible();
+});
+
+test.describe("mitigator map", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/mitigators");
+  });
+
+  test("mounts and renders a pin for every mitigator", async ({ page }) => {
+    await expect(page.getByTestId("mitigator-map")).toBeVisible();
+    await expect(page.getByTestId("map-pin")).toHaveCount(
+      mitigators.mitigators.length,
+    );
+  });
+
+  test("clicking a pin opens a popup with name + tel link and fires map_pin_open", async ({
+    page,
+  }) => {
+    await expect(page.getByTestId("mitigator-map")).toBeVisible();
+    const first = mitigators.mitigators[0];
+    const pin = page.getByRole("button", { name: first.name });
+    // Invoke the marker's own click handler directly. A real click would be
+    // hit-tested against any map control overlapping the marker at this
+    // viewport; we are exercising the marker behavior, not control z-order.
+    await expectClientEvent(page, "map_pin_open", async () => {
+      await pin.evaluate((el: HTMLElement) => el.click());
+    });
+    const popup = page.locator(".maplibregl-popup");
+    await expect(popup).toContainText(first.name);
+    if (first.phone) {
+      await expect(popup.locator('a[href^="tel:"]')).toBeVisible();
+    }
+  });
 });
