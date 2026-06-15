@@ -2,6 +2,21 @@
 
 > **Picking this up (fresh session or after compaction)?** Read this first, then `CLAUDE.md` (+ `AGENTS.md`), the spec, and `git log --oneline`. This is the living state of the build — it captures the *why* and *how* that a chat summary loses. Update it as you go.
 
+## Where we are (as of 2026-06-15, Mitigator directory — on branch `feat-map-mitigators`, PR #1, NOT yet merged/deployed)
+
+- **New `/mitigators` route** completes the funnel's "now go fix it" step: a directory of 12 California-certified radon mitigators as an accessible table, enhanced with an interactive MapLibre map. Built in verified chunks A–C; full research, data provenance, and chunk history live in `docs/MAP_MITIGATORS_PLAN.md`.
+- **Coverage:** full suite green — schema guard + 96 e2e (mobile + desktop) under the `CI=1` production gate; `npm run build` clean.
+- **Status:** open PR, not merged. The deployed site (below) is still Chunk 6; merge to `main` to deploy. **Run `npm install` after checkout** — the branch added `maplibre-gl` to `package.json`.
+- **NEXT (carried over):** enable Web Analytics in the Vercel dashboard; the Chunk-5 rate-limiting follow-up before driving traffic.
+
+### Mitigator directory decisions worth remembering
+- **Roster provenance is two-sourced.** The certified list is CDPH (`cdph_mitigators` → the *Certified Radon Services Providers* page; kept distinct from `cdph_radon`, which is the radon-testing page the kit link still uses). Office location + phone are enriched from the CSLB license lookup (`cslb`). Both primary-tier, enforced by `assertMitigators`.
+- **Map is a progressive enhancement; the list is the truth.** MapLibre GL JS + OpenFreeMap "bright" tiles (no API key, no cost, attribution only). Dynamically imported inside `useEffect` for SSR safety; if WebGL is absent the map renders nothing and the accessible list still carries the content. `map_pin_open` fires via the `__rgEvents` seam.
+- **Office is not service area.** A few mitigators are CA-certified but NV-based (e.g. Minden), so the schema allows `state: "CA" | "NV"` and the UI says pins mark the office. The **Nevada-only chunk (D) was retired**: a NV-only mitigator can't legally work a CA home, and border pros who serve Tahoe are already on the CA list.
+- **Geocoded once, baked.** lat/lng from the US Census Geocoder (street-level) with an OSM city/ZIP fallback for PO-box-only addresses (`precise: false`). Regenerate with `scripts/geocode-mitigators.mjs`; the snapshot date is `updatedAt`.
+- **New `components/ui/table.tsx` primitive** follows the existing shadcn-primitive style (semantic tokens). Two divergences are documented in its header comment (no `whitespace-nowrap`; a focusable scroll container) for the mobile no-overflow rule.
+- **CLAUDE.md gained the dev-vs-prod e2e gate note** (cold `next dev` flakes the webkit RSC prefetch; trust `CI=1 npm run test`, don't patch app behavior for a dev-only flake).
+
 ## Where we are (as of 2026-06-14, Chunk 6 complete — DEPLOYED & LIVE)
 
 > **Live:** https://radonguide.vercel.app (Vercel project `radon-guide`, GitHub `williamphelps13/radon-guide`, public). Pushes to `main` auto-deploy. Production env: `NEXT_PUBLIC_SITE_URL`, `RESEND_API_KEY` (Full access), `OWNER_EMAIL`. **Both email flows verified in production** (newsletter → Resend contact; partnership → owner inbox). Resend now uses Segments (no audience ID). Sending `FROM` is still `onboarding@resend.dev` — verify a domain before emailing non-owner recipients. **Still to do: enable Web Analytics in the Vercel dashboard.**

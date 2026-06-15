@@ -4,7 +4,7 @@ import { getMitigators } from "@/lib/content";
 import { MitigatorMap } from "@/components/mitigator-map";
 import { MitigatorList } from "@/components/mitigator-list";
 
-const { copy } = getMitigators();
+const { copy, mitigators, updatedAt } = getMitigators();
 
 export const metadata: Metadata = {
   title: copy.title,
@@ -13,7 +13,6 @@ export const metadata: Metadata = {
 };
 
 export default function MitigatorsPage() {
-  const { mitigators, updatedAt } = getMitigators();
   return (
     <main className="mx-auto max-w-2xl px-5 py-12">
       <h1 className="text-2xl">{copy.heading}</h1>
