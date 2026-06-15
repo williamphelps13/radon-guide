@@ -123,6 +123,9 @@ const MitigatorSchema = z.object({
    **CSLB** ([cslb.ca.gov](https://www.cslb.ca.gov/)) to get the business city/address.
    CSLB is a CA-gov public record, so this stays state-sourced. (NV's UNR list already
    includes region, so NV skips this step.)
+   - *Note:* CSLB's "Check A License" is a JS/postback app; deep-linking by `LicNum`
+     returns only the empty form to an automated fetch (same bot wall as CDPH). The
+     lookups are done by hand (only 12) and pasted in, then geocoded.
    - *Caveat:* a contractor's business address is their **office**, not their service
      area. A mitigator may serve a wide radius. Pins mark "where they're based," and
      the list/UI should say so to avoid a misleading "nearest pin = best for me."
@@ -168,7 +171,8 @@ const MitigatorSchema = z.object({
 
 ## Open questions / TODOs
 - [x] ~~Verify the CDPH mitigators PDF fields + count~~ — done (owner paste, 2026-06-15): 12 unique, no location field.
-- [ ] **Decide the location-enrichment source: CSLB license lookup (recommended, CA-gov) vs NRPP listing** (blocker for mapping CA).
+- [x] ~~Decide location-enrichment source~~ → **CSLB license lookup** (owner, 2026-06-15).
+- [x] ~~Map vs list~~ → **list first** (shippable), map as a later enhancement (owner, 2026-06-15).
 - [ ] Decide how to convey **service area vs office location** so pins aren't misleading.
 - [ ] Confirm MapLibre GL JS works cleanly under Next 16 / Turbopack (read bundled docs; SSR-guard the client component).
 - [ ] Where does the map live — its own route/section, or appended to the existing funnel page? (Affects the one-`h1` rule.)
