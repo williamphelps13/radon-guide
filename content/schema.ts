@@ -88,6 +88,7 @@ export const MitigatorsSchema = z.object({
   // Page copy lives in the model (not inline JSX) so the presence + voice gates cover it.
   copy: z.object({
     title: z.string().nonempty(), // <title> (templated with the site name)
+    description: z.string().nonempty().max(160), // meta description; Google truncates ~155–160
     heading: z.string().nonempty(), // the h1
     intro: z.string().nonempty(),
     mapNote: z.string().nonempty(), // office-vs-service-area caveat under the map

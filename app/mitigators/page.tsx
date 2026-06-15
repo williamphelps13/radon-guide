@@ -8,8 +8,7 @@ const { copy } = getMitigators();
 
 export const metadata: Metadata = {
   title: copy.title,
-  description:
-    "California-certified radon mitigation contractors with phone numbers, from the CDPH certified list and the state license board.",
+  description: copy.description,
   alternates: { canonical: "/mitigators" },
 };
 

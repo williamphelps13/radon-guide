@@ -3,7 +3,7 @@ import type { Mitigators } from "./schema";
 /**
  * Certified radon mitigators, baked as typed data (the only seam is
  * `lib/content.ts`). California roster from the CDPH "Certified Mitigators"
- * list (`cdph_radon`); office location + phone enriched from the CA Contractors
+ * list (`cdph_mitigators`); office location + phone enriched from the CA Contractors
  * State License Board (`cslb`); lat/lng geocoded once via the US Census Geocoder
  * (street-level) with an OSM city/ZIP fallback for PO-box-only addresses
  * (`precise: false`). Regenerate with `scripts/geocode-mitigators.mjs`.
@@ -15,6 +15,8 @@ export const MITIGATORS = {
   updatedAt: "2026-06-15",
   copy: {
     title: "Find a California-Certified Mitigator",
+    description:
+      "California-certified radon mitigation contractors with phone numbers, from the CDPH certified list and the state license board.",
     heading: "Find a California-certified radon mitigator",
     intro:
       "If a test comes back at or above 4 pCi/L, the next step is hiring a certified mitigator. California regulates the work itself: a mitigator must hold a national certification and a California contractor license, and be on the CDPH certified list. Everyone below clears that bar, so they can legally mitigate a California home, South Lake Tahoe included.",
@@ -34,7 +36,7 @@ export const MITIGATORS = {
       lat: 33.64013,
       lng: -117.74044,
       precise: true,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "Norman Denny",
@@ -48,7 +50,7 @@ export const MITIGATORS = {
       lat: 38.9533,
       lng: -119.76366,
       precise: false,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "Cameron Dopke",
@@ -62,7 +64,7 @@ export const MITIGATORS = {
       lat: 38.801,
       lng: -119.80097,
       precise: true,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "Fred Ellrott",
@@ -75,7 +77,7 @@ export const MITIGATORS = {
       lat: 34.25723,
       lng: -118.99621,
       precise: false,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "Daniel Frayman",
@@ -89,7 +91,7 @@ export const MITIGATORS = {
       lat: 34.16836,
       lng: -118.61934,
       precise: true,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "Jason Gregory",
@@ -103,7 +105,7 @@ export const MITIGATORS = {
       lat: 34.21779,
       lng: -118.87031,
       precise: true,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "Jordan Heichman",
@@ -116,7 +118,7 @@ export const MITIGATORS = {
       lat: 38.69573,
       lng: -120.76734,
       precise: true,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "John Henderson",
@@ -130,7 +132,7 @@ export const MITIGATORS = {
       lat: 34.44035,
       lng: -119.73846,
       precise: true,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "Eddie Huchingson",
@@ -144,7 +146,7 @@ export const MITIGATORS = {
       lat: 34.2053,
       lng: -118.86304,
       precise: true,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "Peter Mandel",
@@ -158,7 +160,7 @@ export const MITIGATORS = {
       lat: 37.71752,
       lng: -122.15988,
       precise: true,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "Edward Riley",
@@ -172,7 +174,7 @@ export const MITIGATORS = {
       lat: 39.16894,
       lng: -120.14348,
       precise: false,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
     {
       name: "Iurii Zharkov",
@@ -186,7 +188,7 @@ export const MITIGATORS = {
       lat: 34.06107,
       lng: -118.40024,
       precise: true,
-      sourceId: "cdph_radon",
+      sourceId: "cdph_mitigators",
     },
   ],
 } satisfies Mitigators;

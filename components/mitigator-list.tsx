@@ -68,7 +68,7 @@ export function MitigatorList({
         </TableBody>
       </Table>
       <div className="mt-4 flex flex-wrap gap-2">
-        <SourceChip sourceId="cdph_radon" />
+        <SourceChip sourceId="cdph_mitigators" />
         <SourceChip sourceId="cslb" />
       </div>
     </section>

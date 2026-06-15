@@ -55,6 +55,12 @@ export const SOURCES = {
     url: "https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon/Radon-Testing.aspx",
     tier: "primary",
   },
+  cdph_mitigators: {
+    id: "cdph_mitigators",
+    label: "CDPH Certified Radon Services Providers",
+    url: "https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon/Certified-Radon-Services-Providers.aspx",
+    tier: "primary",
+  },
   angi_2026: {
     id: "angi_2026",
     label: "Angi radon mitigation cost data",

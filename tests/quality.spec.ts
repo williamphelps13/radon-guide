@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 import { SITE_URL } from "@/lib/site";
 import { faqSections } from "@/components/json-ld";
+import { mitigators } from "./helpers";
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/");
@@ -105,6 +106,13 @@ test.describe("mitigators page", () => {
   test("one h1 and the templated title", async ({ page }) => {
     await expect(page.locator("h1")).toHaveCount(1);
     await expect(page).toHaveTitle(/ \| Radon Guide$/);
+  });
+
+  test("meta description comes from the content model", async ({ page }) => {
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      "content",
+      mitigators.copy.description,
+    );
   });
 
   test("no serious or critical axe violations", async ({ page }) => {
