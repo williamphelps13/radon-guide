@@ -64,11 +64,17 @@ CDPH columns are: **Last name · First name · Mitigation Certificate # · Expir
 - Smaller than the ~21 the NRPP mirror implied — CDPH's list is the *legally-operating-in-CA*
   set (national cert **+** CA license), which is the right population for this product.
 
-> ⚠️ **NEW BLOCKER — no location field.** CDPH gives name + phone + license, but **no
-> city or address**, so we cannot place a pin from CDPH alone. We must enrich each
-> row with a location. Options (see "Geocoding"): look up the **CA Contractor License #
-> on CSLB** (CA-gov, gives business city/address — recommended, stays state-sourced),
-> or the **cert # on the NRPP listing** (gives city/state). Pending owner decision.
+> ✅ **RESOLVED — location enrichment done (2026-06-15).** CSLB's "Check A License"
+> is JS/postback (WebFetch can't read it), but it **is** scriptable with **headless
+> Playwright** (already in this repo). A batch script drove the search form for all 12
+> licenses and pulled business name, **full street address**, city/state/ZIP, business
+> phone, entity, classifications, and license status. Raw output saved to
+> `docs/mitigators-ca-raw.json`. All 12 licenses are current/active. Notable:
+> - **Denny is NV-based** (Minden, NV) but on the CA list — confirms office ≠ service area.
+> - Full street addresses mean we can geocode precisely via the US Census Geocoder.
+> - **Two phone numbers exist per contractor:** the CDPH-listed cert phone vs the CSLB
+>   business line (they differ). Decide which to display (lean: the CDPH cert phone,
+>   since that's the radon-certification contact of record).
 
 ### Nevada — UNR Extension (new source to add, tier `primary`)
 - Authoritative list: **HTML table** at
@@ -123,9 +129,13 @@ const MitigatorSchema = z.object({
    **CSLB** ([cslb.ca.gov](https://www.cslb.ca.gov/)) to get the business city/address.
    CSLB is a CA-gov public record, so this stays state-sourced. (NV's UNR list already
    includes region, so NV skips this step.)
-   - *Note:* CSLB's "Check A License" is a JS/postback app; deep-linking by `LicNum`
-     returns only the empty form to an automated fetch (same bot wall as CDPH). The
-     lookups are done by hand (only 12) and pasted in, then geocoded.
+   - *Method (proven):* CSLB's "Check A License" is a JS/postback app, so WebFetch can't
+     read it, but **headless Playwright** can drive the form (`#MainContent_LicNo` +
+     `#MainContent_Contractor_License_Number_Search`) and read the rendered detail page.
+     Done for all 12 on 2026-06-15 → `docs/mitigators-ca-raw.json`. (Env note: launch the
+     repo's chromium at `/opt/pw-browsers/...` with `ignoreHTTPSErrors` for the proxy.)
+     Re-run when refreshing the roster; CSLB has periodic maintenance windows that return
+     empty fields, so guard on "Business Information" + a ZIP being present.
    - *Caveat:* a contractor's business address is their **office**, not their service
      area. A mitigator may serve a wide radius. Pins mark "where they're based," and
      the list/UI should say so to avoid a misleading "nearest pin = best for me."
@@ -172,8 +182,11 @@ const MitigatorSchema = z.object({
 ## Open questions / TODOs
 - [x] ~~Verify the CDPH mitigators PDF fields + count~~ — done (owner paste, 2026-06-15): 12 unique, no location field.
 - [x] ~~Decide location-enrichment source~~ → **CSLB license lookup** (owner, 2026-06-15).
+- [x] ~~Pull CSLB locations for the 12~~ → done via headless Playwright → `docs/mitigators-ca-raw.json`.
 - [x] ~~Map vs list~~ → **list first** (shippable), map as a later enhancement (owner, 2026-06-15).
+- [ ] Decide which phone to display: **CDPH cert phone** vs CSLB business phone (they differ).
 - [ ] Decide how to convey **service area vs office location** so pins aren't misleading.
+- [ ] Geocode the 12 street addresses → lat/lng (US Census Geocoder) for the eventual map.
 - [ ] Confirm MapLibre GL JS works cleanly under Next 16 / Turbopack (read bundled docs; SSR-guard the client component).
 - [ ] Where does the map live — its own route/section, or appended to the existing funnel page? (Affects the one-`h1` rule.)
 - [ ] OpenFreeMap attribution placement (required: "OpenFreeMap © OpenMapTiles Data from OpenStreetMap").
