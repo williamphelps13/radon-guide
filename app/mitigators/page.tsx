@@ -5,7 +5,7 @@ import { MitigatorMap } from "@/components/mitigator-map";
 import { MitigatorList } from "@/components/mitigator-list";
 
 export const metadata: Metadata = {
-  title: "Find a Certified Mitigator",
+  title: "Find a California-Certified Mitigator",
   description:
     "California-certified radon mitigation contractors with phone numbers, from the CDPH certified list and the state license board.",
   alternates: { canonical: "/mitigators" },
@@ -15,18 +15,20 @@ export default function MitigatorsPage() {
   const { mitigators } = getMitigators();
   return (
     <main className="mx-auto max-w-2xl px-5 py-12">
-      <h1 className="text-2xl">Find a certified radon mitigator</h1>
+      <h1 className="text-2xl">Find a California-certified radon mitigator</h1>
       <p className="mt-3 text-ink-700">
         If a test comes back at or above 4 pCi/L, the next step is hiring a
-        certified mitigator. California requires every radon mitigator to hold a
-        national certification and a state contractor license. Everyone below is
-        on the CDPH certified list.
+        certified mitigator. California regulates the work itself: a mitigator
+        must hold a national certification and a California contractor license,
+        and be on the CDPH certified list. Everyone below clears that bar, so
+        they can legally mitigate a California home, South Lake Tahoe included.
       </p>
       <div className="mt-8">
         <MitigatorMap mitigators={mitigators} />
         <p className="mt-2 text-xs text-ink-500">
-          Pins mark each contractor&rsquo;s office, not their service area. Call
-          to confirm they cover your area.
+          Pins mark each contractor&rsquo;s office, not their service area or
+          where they&rsquo;re licensed. A few are based in Nevada but certified
+          for California. Call to confirm they cover your area.
         </p>
       </div>
       <div className="mt-8">
