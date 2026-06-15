@@ -34,3 +34,18 @@ test("the mitigation table cites its source as a primary new-tab link", async ({
       'section[aria-label="Radon mitigation options"] a[data-source-tier="primary"]',
   });
 });
+
+// The mitigator directory traces each listing to its primary state sources.
+test.describe("mitigators page sources", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/mitigators");
+  });
+
+  for (const sourceId of ["cdph_radon", "cslb"] as const) {
+    test(`mitigator source "${sourceId}" is a primary new-tab link`, async ({
+      page,
+    }) => {
+      await expectPrimarySourceLink(page, { sourceId });
+    });
+  }
+});

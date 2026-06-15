@@ -178,8 +178,15 @@ const MitigatorSchema = z.object({
    flagged `precise:false`); `getMitigators()` seam in `lib/content.ts`; extended the schema guard.
    Verified: schema guard ✓, tsc ✓, eslint ✓, `next build` ✓ (static), e2e 72/72 ✓.
    (`unr_radon` deferred to Chunk D with the NV data.)
-2. **Chunk B — accessible list.** Server-component list with `tel:` links; presence
-   + credibility + a11y tests. This alone is a shippable, fully-accessible feature.
+2. ~~**Chunk B — accessible list.**~~ ✅ **DONE (2026-06-15).** Added a reusable shadcn
+   `components/ui/table.tsx` primitive (canonical, with two documented divergences:
+   no `whitespace-nowrap` + `tabIndex={0}` scroll container, both for the mobile
+   no-overflow + axe rules). New `/mitigators` route (own `h1`, metadata, sitemap) renders
+   `components/mitigator-list.tsx` from `getMitigators()` — name/business, city (+"serves
+   California" for the NV-based one), `tel:` phone links, CDPH + CSLB source chips, snapshot
+   date. Refactored `mitigation-table.tsx` onto the primitive and linked it to `/mitigators`.
+   Test-first across content/credibility/quality specs (RED→GREEN). Verified: schema guard ✓,
+   tsc ✓, eslint ✓, build ✓ (static), e2e 88/88 ✓.
 3. **Chunk C — map enhancement.** MapLibre + OpenFreeMap client component layered
    over the list; behavior test for marker/popup; mobile + axe checks.
 4. **Chunk D — Nevada.** Add NV data; decide list-only vs map given the tiny count.

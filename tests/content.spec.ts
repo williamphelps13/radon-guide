@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { content } from "./helpers";
+import { content, mitigators } from "./helpers";
 
 // Presence invariant: every field in the content model renders on the page.
 // DRY (reads from content/page.ts) and self-extending as sections are added.
@@ -87,4 +87,37 @@ test("both form headings and CTAs render", async ({ page }) => {
       page.locator(`option[value="${role.value}"]`),
     ).toHaveText(role.label);
   }
+});
+
+test("the mitigation section links to the mitigator directory", async ({
+  page,
+}) => {
+  await expect(
+    page.getByRole("link", { name: /certified mitigator/i }),
+  ).toBeVisible();
+});
+
+// Presence invariant for the mitigator directory (DRY, from getMitigators()).
+test.describe("mitigators page", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/mitigators");
+  });
+
+  test("exactly one h1", async ({ page }) => {
+    await expect(page.locator("h1")).toHaveCount(1);
+  });
+
+  test("every mitigator renders its name, location, and phone", async ({
+    page,
+  }) => {
+    for (const m of mitigators.mitigators) {
+      await expect(page.getByText(m.name, { exact: true }).first()).toBeVisible();
+      await expect(page.getByText(m.city, { exact: false }).first()).toBeVisible();
+      if (m.phone) {
+        await expect(
+          page.getByRole("link", { name: m.phone }).first(),
+        ).toBeVisible();
+      }
+    }
+  });
 });
