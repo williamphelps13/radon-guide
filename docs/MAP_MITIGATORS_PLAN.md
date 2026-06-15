@@ -171,8 +171,13 @@ const MitigatorSchema = z.object({
 
 ## Proposed chunk sequence (verify-then-execute)
 
-1. **Chunk A — data + model.** Verify CDPH PDF; add `unr_radon` source; write
-   `content/mitigators.ts` + schema + geocode script; schema guard green. (No UI yet.)
+1. ~~**Chunk A — data + model.**~~ ✅ **DONE (2026-06-15).** Added `cslb` primary source;
+   `MitigatorSchema`/`MitigatorsSchema` + `assertMitigators` (primary-tier + unique cert IDs)
+   in `content/schema.ts`; baked the 12 CA mitigators in `content/mitigators.ts` (CSLB business
+   phones; lat/lng via `scripts/geocode-mitigators.mjs` — 9 street-level, 3 city-level fallback
+   flagged `precise:false`); `getMitigators()` seam in `lib/content.ts`; extended the schema guard.
+   Verified: schema guard ✓, tsc ✓, eslint ✓, `next build` ✓ (static), e2e 72/72 ✓.
+   (`unr_radon` deferred to Chunk D with the NV data.)
 2. **Chunk B — accessible list.** Server-component list with `tel:` links; presence
    + credibility + a11y tests. This alone is a shippable, fully-accessible feature.
 3. **Chunk C — map enhancement.** MapLibre + OpenFreeMap client component layered

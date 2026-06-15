@@ -61,6 +61,12 @@ export const SOURCES = {
     url: "https://www.angi.com/articles/radon-remediation-cost.htm",
     tier: "secondary",
   },
+  cslb: {
+    id: "cslb",
+    label: "CA Contractors State License Board (license lookup)",
+    url: "https://www.cslb.ca.gov/onlineservices/checklicenseII/checklicense.aspx",
+    tier: "primary",
+  },
 } as const satisfies Record<string, Source>;
 
 export type SourceId = keyof typeof SOURCES;

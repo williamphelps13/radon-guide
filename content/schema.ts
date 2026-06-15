@@ -63,6 +63,33 @@ const FormsSchema = z.object({
   }),
 });
 
+// A certified radon mitigator. Its own model (not part of the funnel page): the
+// roster is a directory, sourced from a state's certified list (CDPH for CA),
+// with office location enriched from CSLB and baked lat/lng for the map.
+const MitigatorSchema = z.object({
+  name: z.string().nonempty(), // "First Last"
+  business: z.string().optional(), // company; omitted for sole individuals
+  certId: z.string().nonempty(), // CDPH mitigation cert # — the de-dupe key
+  roster: z.enum(["CA", "NV"]), // whose certified list they're on
+  city: z.string().nonempty(), // office city (CSLB)
+  state: z.enum(["CA", "NV"]), // office state (can differ from roster)
+  zip: z.string().optional(),
+  phone: z.string().optional(), // CSLB business line, display form
+  caLicense: z.string().optional(), // CA contractor license #
+  lat: z.number(),
+  lng: z.number(),
+  precise: z.boolean(), // true = street-level geocode; false = city centroid
+  sourceId, // the certified-list source backing the listing
+});
+
+export const MitigatorsSchema = z.object({
+  updatedAt: z.string().nonempty(), // these certified lists are periodic snapshots
+  mitigators: z.array(MitigatorSchema).min(1),
+});
+
+export type Mitigators = z.infer<typeof MitigatorsSchema>;
+export type Mitigator = z.infer<typeof MitigatorSchema>;
+
 export const PageContentSchema = z.object({
   // SEO/social metadata. Lengths guarded to the search-result display windows.
   meta: z.object({
@@ -111,5 +138,23 @@ export function assertPrimaryTier(content: PageContent): void {
   }
   if (offenders.length) {
     throw new Error(`Non-primary sources used on-page: ${offenders.join(", ")}`);
+  }
+}
+
+/**
+ * Invariant: every mitigator cites a primary-tier source, and cert IDs are
+ * unique (catches the duplicate rows the CDPH list can contain).
+ */
+export function assertMitigators(data: Mitigators): void {
+  const offenders: string[] = [];
+  const seen = new Set<string>();
+  for (const m of data.mitigators) {
+    if (SOURCES[m.sourceId].tier !== "primary")
+      offenders.push(`source:${m.certId}`);
+    if (seen.has(m.certId)) offenders.push(`duplicate cert:${m.certId}`);
+    seen.add(m.certId);
+  }
+  if (offenders.length) {
+    throw new Error(`Mitigator data invalid: ${offenders.join(", ")}`);
   }
 }
