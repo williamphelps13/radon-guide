@@ -1,0 +1,183 @@
+# Feature plan — Radon Mitigator Map (CA primary, NV secondary)
+
+> Branch: `feat-map-mitigators` (off `main`). Status: **exploration / design**, no code yet.
+> Read `CLAUDE.md` + `docs/HANDOFF.md` first. This doc captures the research, the
+> decisions + rationale, and the chunked build sequence so the work survives a
+> fresh session. Update it as chunks land.
+
+## Goal
+
+Add a map of certified radon **mitigation** contractors in California (then Nevada)
+so a reader can pan, zoom, and see each contractor's name and phone number. The
+map serves the funnel's "now go fix it" step: a reader who has tested and found an
+elevated result needs a credentialed person to call.
+
+## Decisions (owner-approved 2026-06-15)
+
+| Decision | Choice | Why |
+|---|---|---|
+| Map library | **MapLibre GL JS** | Vector, free, pairs with OpenFreeMap; native GeoJSON clustering; no key/card. |
+| Basemap tiles | **OpenFreeMap** public instance | No API key, no credit card, commercial use allowed, no request limits. Attribution only. Cost $0. |
+| Data scope | **State-published lists only** | CA = CDPH, NV = UNR Extension. Authoritative, lower legal risk than scraping NRPP/NRSB (which publish no reuse license). Fits the credibility thesis. |
+| Geocoding | **Enrich location via CSLB license #, then geocode** | CDPH has no location field; the CA license # resolves to a business city/address on CSLB (CA-gov). Geocode that once, baked. (Pending owner sign-off on CSLB vs NRPP.) |
+| A11y model | **List is the primary content; map is an enhancement** | Required by our axe gate anyway; best practice for dense map data. |
+| Phone numbers | Show as `tel:` links in both list rows and map popups | State lists publish them; high-value, cheap. |
+
+### Rejected alternatives (so we don't relitigate)
+- **react-leaflet + raster tiles** — the free raster options fail us: OSM's public tile server is not sanctioned for production/commercial sites, and Stadia's free tier bars commercial use.
+- **Mapbox / Google Maps** — both require a credit card on file and bill per use with overage risk. Google replaced its flat $200/mo credit with smaller per-SKU caps in March 2025.
+- **Scraping NRPP / NRSB** — search-only forms, no export/API, and only an "all rights reserved" copyright line (no reuse license). City-only listings. Redundant: both states require national cert anyway, so the state lists already capture these people.
+- **Self-hosted Protomaps `.pmtiles`** — kept as the future upgrade path if we ever want zero third-party basemap dependency (a regional extract on Cloudflare R2 is ~$0 with zero egress). Not needed for v1.
+
+## Data sources
+
+### California — CDPH (already a `primary` source: `cdph_radon`)
+- Authoritative list: **`CA Cert Mitigators.pdf`** linked from the CDPH
+  [Certified Radon Services Providers](https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon/Certified-Radon-Services-Providers.aspx) page.
+- CA *legally requires* mitigators to hold NRPP/NRSB cert **plus** a CA contractor
+  license (B / C20 / C36 / D64), and to be on this list.
+  [Certification rules](https://www.cdph.ca.gov/Programs/CEH/DRSEM/Pages/EMB/Radon/Radon-Services-Certification.aspx).
+- CDPH notes the list "is not updated daily" — treat as a periodic snapshot; store a `lastFetched` date.
+
+#### ✅ Verified roster (owner-supplied from the CDPH page, 2026-06-15)
+CDPH columns are: **Last name · First name · Mitigation Certificate # · Expiration · Phone · CA Contractor License #**.
+**There is no city / address / company field.** This is the blocker for mapping (see below).
+
+| Last | First | Cert # | Expires | Phone | CA Lic # |
+|---|---|---|---|---|---|
+| Cole | Scott | 115293 | 6/30/2027 | 844-852-2858 | 797379 |
+| Denny | Norman | 106142 | 8/31/2027 | 775-691-7101 | 241944 |
+| Dopke | Cameron | 112346 | 9/30/2027 | 530-544-1862 | 922311 |
+| Ellrott | Fred | 101023 | 11/1/2026 | 805-732-2476 | 617021 |
+| Frayman | Daniel | 114455 | 1/31/2027 | 818-749-8576 | 1071369 |
+| Gregory | Jason | 107970 | 11/2/2026 | 805-244-6687 | 843797 |
+| Heichman | Jordan | 106156 | 11/4/2026 | 530-621-4052 | 816271 |
+| Henderson | John | 108871 | 11/3/2026 | 805-280-6616 | 632908 |
+| Huchingson | Eddie | 107621 | 3/31/2027 | 805-908-9274 | 612436 |
+| Mandel | Peter | 104696 | 3/31/2027 | 510-300-7500 | 839709 |
+| Riley | Edward | 106415 | 8/31/2026 | 530-583-6653 | 960994 |
+| Zharkov | Iurii | 115915 | 4/30/2028 | 951-712-4722 | 1118941 |
+
+- **12 unique mitigators.** The source list has a **duplicate**: "Iurii Zharkov" and
+  "Zharkov Iurii" are the same person (cert 115915, same phone + license, first/last
+  swapped). De-dupe on cert #.
+- Smaller than the ~21 the NRPP mirror implied — CDPH's list is the *legally-operating-in-CA*
+  set (national cert **+** CA license), which is the right population for this product.
+
+> ⚠️ **NEW BLOCKER — no location field.** CDPH gives name + phone + license, but **no
+> city or address**, so we cannot place a pin from CDPH alone. We must enrich each
+> row with a location. Options (see "Geocoding"): look up the **CA Contractor License #
+> on CSLB** (CA-gov, gives business city/address — recommended, stays state-sourced),
+> or the **cert # on the NRPP listing** (gives city/state). Pending owner decision.
+
+### Nevada — UNR Extension (new source to add, tier `primary`)
+- Authoritative list: **HTML table** at
+  [extension.unr.edu/radon/contractors.aspx](https://extension.unr.edu/radon/contractors.aspx),
+  split Northern / Southern Nevada.
+- Verified fields: contractor/owner name, NRPP ID + expiration, NV contractor
+  license # + expiration, company (hyperlinked), service area, phone, email.
+- NV has no state radon cert (relies on national NRPP/NRSB) + a NV contractor license.
+- **Size:** tiny — only a handful of mitigation-certified providers. A 2-pin map is
+  marginal, so NV likely launches **list-first**, map optional.
+
+Add to `content/sources.ts`:
+```ts
+unr_radon: {
+  id: "unr_radon",
+  label: "UNR Extension — Nevada Radon Education Program",
+  url: "https://extension.unr.edu/radon/contractors.aspx",
+  tier: "primary",
+},
+```
+
+## Content model (sketch — finalize after the CDPH PDF is verified)
+
+New file `content/mitigators.ts`, validated in `content/schema.ts` (Zod v4),
+exposed only through `lib/content.ts`.
+
+```ts
+const MitigatorSchema = z.object({
+  name: z.string().nonempty(),        // "First Last"
+  certId: z.string().nonempty(),      // mitigation cert # — the de-dupe key
+  state: z.enum(["CA", "NV"]),
+  city: z.string().nonempty(),        // from CSLB (CA) / UNR table (NV)
+  region: z.string().optional(),      // e.g. "Northern Nevada"
+  phone: z.string().optional(),       // display form; tel: derived
+  caLicense: z.string().optional(),   // CA contractor license # (CA only)
+  expires: z.string().optional(),     // cert expiration (freshness signal)
+  lat: z.number(),                    // baked
+  lng: z.number(),
+  sourceId,                           // "cdph_radon" | "unr_radon"
+});
+```
+- `phone` optional so a missing field never breaks the build.
+- Each entry carries a `sourceId`, so `credibility.spec.ts` covers every pin's
+  provenance automatically (must be `tier: "primary"`).
+- A `lastFetched` date per state (the lists are snapshots).
+
+## Build-time data pipeline
+
+1. **Collect** (manual, one-time per refresh): the CDPH roster (above) + the UNR HTML
+   table. CDPH gives name, phone, cert #, license #; **no location**.
+2. **Enrich location** (CDPH has none): look up each CA Contractor License # on
+   **CSLB** ([cslb.ca.gov](https://www.cslb.ca.gov/)) to get the business city/address.
+   CSLB is a CA-gov public record, so this stays state-sourced. (NV's UNR list already
+   includes region, so NV skips this step.)
+   - *Caveat:* a contractor's business address is their **office**, not their service
+     area. A mitigator may serve a wide radius. Pins mark "where they're based," and
+     the list/UI should say so to avoid a misleading "nearest pin = best for me."
+3. **Geocode** (script, one-time): geocode the enriched address via the **US Census
+   Geocoder** (free, no key, public domain) → `lat`/`lng`. Commit the result.
+4. **Bake**: write the typed `Mitigator[]` into `content/mitigators.ts` (de-dupe on cert #).
+5. The schema guard (`tests/schema.test.ts`, via `tsx`) validates it at test time.
+
+## Map + a11y implementation notes
+
+- `'use client'` map component (interactivity); the **list is a server component**
+  rendering the same `content` data, so it works with JS off and is the SR target.
+- MapLibre native clustering (`cluster: true` GeoJSON source) — though at ~25 pins
+  clustering is barely needed; keep it simple.
+- Axe-passing requirements (our hard gate):
+  - Zoom controls need `aria-label` ("Zoom in" / "Zoom out") — the #1 map axe failure.
+  - The map container needs an accessible name; markers need accessible names.
+  - `tel:` links: visible hyphen-separated number, no `aria-label` digit override
+    (the field is split on this; plain text is the safe default).
+  - If the map is ever made decorative, use `inert` (not bare `aria-hidden`, which
+    trips `aria-hidden-focus` over focusable markers).
+- Risk ramp (`--risk-*`) stays reserved for pCi/L. Map/pins use brand/ink + shadcn
+  semantics only.
+
+## Definition of done (per CLAUDE.md 5 layers)
+
+- [ ] **Presence** — mitigator fields render (auto via `content.spec.ts` iterating the model).
+- [ ] **Credibility** — every pin's `sourceId` is primary-tier + linked (auto via `credibility.spec.ts`).
+- [ ] **Behavior** (write first, RED → GREEN): list renders all entries; `tel:` hrefs correct; map mounts; marker → popup shows name + phone; optional `track()` event via the `window.__rgEvents` seam.
+- [ ] **Structure / a11y** — still exactly one `h1`; axe clean; zoom + markers + map container have accessible names.
+- [ ] **Platform** — no horizontal overflow at mobile width; the list (key content) is visible on mobile.
+- [ ] `npm run test` green.
+
+## Proposed chunk sequence (verify-then-execute)
+
+1. **Chunk A — data + model.** Verify CDPH PDF; add `unr_radon` source; write
+   `content/mitigators.ts` + schema + geocode script; schema guard green. (No UI yet.)
+2. **Chunk B — accessible list.** Server-component list with `tel:` links; presence
+   + credibility + a11y tests. This alone is a shippable, fully-accessible feature.
+3. **Chunk C — map enhancement.** MapLibre + OpenFreeMap client component layered
+   over the list; behavior test for marker/popup; mobile + axe checks.
+4. **Chunk D — Nevada.** Add NV data; decide list-only vs map given the tiny count.
+
+## Open questions / TODOs
+- [x] ~~Verify the CDPH mitigators PDF fields + count~~ — done (owner paste, 2026-06-15): 12 unique, no location field.
+- [ ] **Decide the location-enrichment source: CSLB license lookup (recommended, CA-gov) vs NRPP listing** (blocker for mapping CA).
+- [ ] Decide how to convey **service area vs office location** so pins aren't misleading.
+- [ ] Confirm MapLibre GL JS works cleanly under Next 16 / Turbopack (read bundled docs; SSR-guard the client component).
+- [ ] Where does the map live — its own route/section, or appended to the existing funnel page? (Affects the one-`h1` rule.)
+- [ ] OpenFreeMap attribution placement (required: "OpenFreeMap © OpenMapTiles Data from OpenStreetMap").
+- [ ] Given only **12 CA + a few NV** office-points, sanity-check that a map adds enough over a sortable list to justify the dependency.
+
+## Research provenance
+Five-angle deep-research pass on 2026-06-15 (data sources, NRPP/NRSB directories,
+geocoding, map stack + tiles, accessibility). Key external sources:
+CDPH radon pages; UNR Extension radon pages; nrpp.info / nrsb.org; certifiedradonpros.org;
+OSMF Nominatim + tile usage policies; US Census Gazetteer/Geocoder; OpenFreeMap;
+Protomaps; Equal Entry / AccessibilityOz / Leaflet a11y docs.
