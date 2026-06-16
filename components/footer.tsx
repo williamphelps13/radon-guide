@@ -2,8 +2,6 @@ import Link from "next/link";
 import { getPageContent } from "@/lib/content";
 import { NewsletterForm } from "./newsletter-form";
 import { PartnershipForm } from "./partnership-form";
-import { CtaTest } from "./cta-test";
-import { MitigatorCta } from "./mitigator-cta";
 import { FooterBeacon } from "./footer-beacon";
 
 export function Footer() {
@@ -11,10 +9,6 @@ export function Footer() {
   return (
     <footer className="mx-auto mt-12 max-w-2xl px-5 pb-16">
       <FooterBeacon />
-      <div className="mb-6 flex flex-wrap gap-3">
-        <CtaTest location="footer" />
-        <MitigatorCta location="footer" />
-      </div>
       <div className="grid gap-8 sm:grid-cols-2">
         <div>
           <h3 className="text-base">{forms.newsletter.heading}</h3>

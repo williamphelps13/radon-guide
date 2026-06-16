@@ -120,11 +120,8 @@ test("form field labels render from the model", async ({ page }) => {
 test("the mitigation section links to the mitigator directory", async ({
   page,
 }) => {
-  // The CTA now appears in the fix-it section and the footer; assert the first.
   await expect(
-    page
-      .getByRole("link", { name: content.mitigation.findMitigatorCta })
-      .first(),
+    page.getByRole("link", { name: content.mitigation.findMitigatorCta }),
   ).toBeVisible();
 });
 

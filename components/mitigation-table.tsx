@@ -39,7 +39,7 @@ export function MitigationTable() {
       </Table>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
         <SourceChip sourceId="epa_citizens_guide" />
-        <MitigatorCta location="fix-it" />
+        <MitigatorCta />
       </div>
     </section>
   );

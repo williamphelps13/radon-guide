@@ -24,7 +24,7 @@ test("the #test section exists for the hero CTA anchor", async ({ page }) => {
 test("the find-a-mitigator CTA links to /mitigators and fires mitigator_cta_click", async ({
   page,
 }) => {
-  const cta = page.getByTestId("cta-mitigator").first();
+  const cta = page.getByTestId("cta-mitigator");
   await expect(cta).toBeVisible();
   await expect(cta).toHaveAttribute("href", "/mitigators");
   // Suppress the navigation so the __rgEvents seam survives the click; the React

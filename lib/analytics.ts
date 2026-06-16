@@ -7,7 +7,7 @@ export type AnalyticsEvent =
   | { name: "reached_testing"; props?: undefined }
   | { name: "reached_footer"; props?: undefined }
   | { name: "map_pin_open"; props: { state: "CA" | "NV" } }
-  | { name: "mitigator_cta_click"; props: { location: "fix-it" | "footer" } };
+  | { name: "mitigator_cta_click"; props?: undefined };
 
 /** Typed wrapper around Vercel Web Analytics custom events (single source of event names). */
 export function track(e: AnalyticsEvent): void {
