@@ -120,8 +120,11 @@ test("form field labels render from the model", async ({ page }) => {
 test("the mitigation section links to the mitigator directory", async ({
   page,
 }) => {
+  // The CTA now appears in the fix-it section and the footer; assert the first.
   await expect(
-    page.getByRole("link", { name: content.mitigation.findMitigatorCta }),
+    page
+      .getByRole("link", { name: content.mitigation.findMitigatorCta })
+      .first(),
   ).toBeVisible();
 });
 
@@ -219,4 +222,15 @@ test.describe("legal pages", () => {
       await expect(page.getByText(text, { exact: true }).first()).toBeVisible();
     }
   });
+});
+
+// The back-link label is shared chrome (ui.backToGuide) rendered on every page
+// that isn't the guide itself; assert it from the model on each.
+test("every sub-page links back to the guide", async ({ page }) => {
+  for (const path of ["/privacy", "/disclosure", "/mitigators"]) {
+    await page.goto(path);
+    await expect(
+      page.getByRole("link", { name: content.ui.backToGuide }),
+    ).toBeVisible();
+  }
 });

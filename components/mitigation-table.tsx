@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getPageContent } from "@/lib/content";
 import { SourceChip } from "./stat-link";
+import { MitigatorCta } from "./mitigator-cta";
 import {
   Table,
   TableBody,
@@ -37,14 +37,9 @@ export function MitigationTable() {
           ))}
         </TableBody>
       </Table>
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
         <SourceChip sourceId="epa_citizens_guide" />
-        <Link
-          href="/mitigators"
-          className="text-sm text-brand-700 underline-offset-2 hover:underline"
-        >
-          {mitigation.findMitigatorCta} →
-        </Link>
+        <MitigatorCta location="fix-it" />
       </div>
     </section>
   );

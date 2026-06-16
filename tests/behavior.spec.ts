@@ -21,6 +21,22 @@ test("the #test section exists for the hero CTA anchor", async ({ page }) => {
   await expect(page.locator("#test")).toBeVisible();
 });
 
+test("the find-a-mitigator CTA links to /mitigators and fires mitigator_cta_click", async ({
+  page,
+}) => {
+  const cta = page.getByTestId("cta-mitigator").first();
+  await expect(cta).toBeVisible();
+  await expect(cta).toHaveAttribute("href", "/mitigators");
+  // Suppress the navigation so the __rgEvents seam survives the click; the React
+  // onClick that fires track still runs (preventDefault stops nav, not handlers).
+  await cta.evaluate((el) =>
+    el.addEventListener("click", (e) => e.preventDefault(), { capture: true }),
+  );
+  await expectClientEvent(page, "mitigator_cta_click", async () => {
+    await cta.click();
+  });
+});
+
 test('the single "start here" testing route is the CDPH kit', async ({
   page,
 }) => {
@@ -45,7 +61,9 @@ test.describe("newsletter form", () => {
     await form.getByLabel("Email").fill("not-an-email");
     await form.evaluate((f: HTMLFormElement) => (f.noValidate = true));
     await form.getByRole("button").click();
-    await expect(page.getByTestId("newsletter-error")).toBeVisible();
+    await expect(page.getByTestId("newsletter-error")).toHaveText(
+      content.forms.errors.invalidEmail,
+    );
     await expect(page.getByTestId("newsletter-ok")).toHaveCount(0);
   });
 
