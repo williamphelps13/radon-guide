@@ -20,7 +20,7 @@ export const PAGE: PageContent = {
     eyebrow: "South Lake Tahoe radon",
     headline:
       "The average tested home in South Lake Tahoe carries the lung-cancer risk of smoking 12–18 cigarettes a day.",
-    body: "Radon is an invisible, odorless gas seeping up from Tahoe's granite. It's a leading cause of lung cancer, and there's no way to know your home's level without testing.",
+    body: "Radon is an invisible, odorless gas that seeps from Tahoe's granite. It's the leading cause of lung cancer in people who don't smoke, and the second leading cause overall. The only way to know your home's level is to test.",
     caveat:
       "The cigarette figure is a risk analogy popularized by the EPA. See how we calculate it below.",
     sourceIds: ["epa_citizens_guide", "darby_2005"],
@@ -59,25 +59,25 @@ export const PAGE: PageContent = {
       id: "is-my-home",
       title: "Is my home at risk?",
       order: 3,
-      body: "Tahoe sits on uranium-bearing granite, and fractured rock plus cold, sealed winters pull soil gas indoors. The EPA map rates the area moderate-risk because it averages all of El Dorado County; the California Geological Survey identifies the Tahoe basin specifically as high-risk. Your neighbor's result tells you nothing. The only way to know is to test your home.",
+      body: "Tahoe sits on uranium-bearing granite, and fractured rock plus cold, sealed winters pull soil gas indoors. The EPA map rates the area only moderate-risk, but it averages all of El Dorado County; the California Geological Survey flags the Tahoe basin itself as high-risk. Radon varies house to house, so your neighbor's reading tells you nothing. The only way to know is to test your home.",
     },
     {
       id: "how-bad",
       title: "How bad, really?",
       order: 4,
-      body: "The EPA action level is 4 pCi/L; the WHO reference level is lower, around 2.7 pCi/L. Radon decays into particles that lodge in the lungs and emit DNA-damaging radiation; risk rises steadily with exposure, with no safe threshold. For the average tested Tahoe home (~6–9 pCi/L), the EPA cigarette-equivalence works out to roughly 12–18 cigarettes a day. Darby et al. (2005), still the reference pooled study and reaffirmed by reviews since, found risk rises about 16% per 100 Bq/m³.",
+      body: "The EPA action level is 4 pCi/L; the WHO reference level is lower, around 2.7 pCi/L. Radon decays into particles that lodge in the lungs and emit DNA-damaging radiation; risk rises with exposure, with no safe threshold. The WHO classifies radon as a Group 1 (known) carcinogen. For the average tested Tahoe home (~6–9 pCi/L), the EPA's cigarette equivalence works out to roughly 12–18 cigarettes a day. Darby et al. (2005), the largest pooled residential-radon study and reaffirmed by reviews since, found risk rises about 16% per 100 Bq/m³.",
     },
     {
       id: "fix-it",
       title: "If it's elevated, fix it",
       order: 6,
-      body: "Most Tahoe homes need sub-slab or sub-membrane depressurization, typically $1,200–$2,500. Sealing cracks alone, opening windows, and air purifiers do not work. A system lasts decades (fans 5–8 years in Tahoe's freeze-thaw), roughly $1/day over its life. A 2.5 pCi/L reading means monitor and retest, not panic.",
+      body: "Most Tahoe homes need sub-slab or sub-membrane depressurization, typically $1,000–$3,500 depending on your foundation. Sealing cracks alone, opening windows, and air purifiers do not work. A system lasts decades (fans 5–8 years in Tahoe's freeze-thaw), about $1 a day over its life. A 2.5 pCi/L reading means monitor and retest, not panic.",
     },
     {
       id: "why-unknown",
       title: "Why isn't this better known? · How we source",
       order: 7,
-      body: "Radon has no villain and no daily ritual to ban, and it threatens a geographically concentrated population with no organized lobby. We cite a primary source for every number on this page; click any figure to verify it on the EPA, WHO, CDC, CDPH, or CGS. Where the science is uncertain, we say so. This is an independent, mission-driven project with no paid relationships yet.",
+      body: "Radon has no villain and no daily ritual to ban, and it threatens a geographically concentrated population with no organized lobby. We cite a primary source for every number on this page; click any figure to verify it on the EPA, WHO, CDPH, or CGS. Where the science is uncertain, we say so. This is an independent, mission-driven project with no paid relationships yet.",
     },
   ],
   riskScale: [
@@ -95,9 +95,9 @@ export const PAGE: PageContent = {
     body: "The average tested Tahoe home reads about 6–9 pCi/L (CGS SR-211). The EPA's cigarette-equivalence puts 4 pCi/L at roughly 8 cigarettes a day, so 6–9 pCi/L works out to about 12–18 a day. It's a lifetime-risk analogy, not a chemical-equivalence claim.",
   },
   testing: {
-    heading: "Find out: test your home",
+    heading: "How to test your home",
     protocol:
-      "Test in winter, windows shut 12 hours before and during; place the detector on an interior wall, 20+ inches up.",
+      "Test in winter; a summer test can read falsely low. Keep windows shut for 12 hours before and during, and place the detector on an interior wall, 20+ inches up.",
     startHere: "start here",
   },
   testingRoutes: [
