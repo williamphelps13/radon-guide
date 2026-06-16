@@ -30,7 +30,9 @@ export function MitigatorList({
           <TableRow>
             <TableHead>{copy.headers.name}</TableHead>
             <TableHead>{copy.headers.location}</TableHead>
-            <TableHead>{copy.headers.phone}</TableHead>
+            <TableHead className="whitespace-nowrap">
+              {copy.headers.phone}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -52,7 +54,7 @@ export function MitigatorList({
                   </span>
                 )}
               </TableCell>
-              <TableCell className="align-top">
+              <TableCell className="align-top whitespace-nowrap tabular-nums">
                 {m.phone ? (
                   <a
                     href={telHref(m.phone)}
