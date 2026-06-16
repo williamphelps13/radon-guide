@@ -10,14 +10,14 @@ const BAND: Record<string, string> = {
 };
 
 export function RiskScale() {
-  const { riskScale } = getPageContent();
+  const { riskScale, riskScaleCopy } = getPageContent();
   return (
     <section
-      aria-label="Radon level scale (pCi/L)"
+      aria-label={riskScaleCopy.ariaLabel}
       className="mx-auto mt-10 max-w-2xl px-5"
     >
       <p className="mb-2 text-xs font-medium text-ink-500">
-        Radon levels — pCi/L
+        {riskScaleCopy.caption}
       </p>
       <div className="grid grid-cols-4 gap-2">
         {riskScale.map((band) => (

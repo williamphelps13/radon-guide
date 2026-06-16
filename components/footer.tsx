@@ -6,7 +6,7 @@ import { CtaTest } from "./cta-test";
 import { FooterBeacon } from "./footer-beacon";
 
 export function Footer() {
-  const { forms } = getPageContent();
+  const { forms, legal } = getPageContent();
   return (
     <footer className="mx-auto mt-12 max-w-2xl px-5 pb-16">
       <FooterBeacon />
@@ -29,11 +29,11 @@ export function Footer() {
       </div>
       <nav className="mt-8 text-sm text-ink-500">
         <Link href="/privacy" className="underline">
-          Privacy
+          {legal.privacy.title}
         </Link>{" "}
         ·{" "}
         <Link href="/disclosure" className="underline">
-          Disclosure
+          {legal.disclosure.title}
         </Link>
       </nav>
     </footer>

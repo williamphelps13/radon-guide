@@ -3,6 +3,9 @@
 import { z } from "zod";
 import { addToAudience } from "@/lib/email";
 import { trackServer } from "@/lib/analytics-server";
+import { getPageContent } from "@/lib/content";
+
+const { errors } = getPageContent().forms;
 
 const schema = z.object({
   email: z.email().max(254),
@@ -19,13 +22,13 @@ export async function subscribe(
     email: form.get("email"),
     website: form.get("website") ?? "",
   });
-  if (!parsed.success) return { ok: false, error: "Please enter a valid email." };
+  if (!parsed.success) return { ok: false, error: errors.invalidEmail };
   if (parsed.data.website) return { ok: true }; // honeypot tripped — pretend success
   try {
     await addToAudience(parsed.data.email);
     await trackServer({ name: "newsletter_submit" });
     return { ok: true };
   } catch {
-    return { ok: false, error: "Something went wrong. Please try again." };
+    return { ok: false, error: errors.generic };
   }
 }

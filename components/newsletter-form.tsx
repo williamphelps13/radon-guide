@@ -8,17 +8,17 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
-function Submit({ label }: { label: string }) {
+function Submit({ label, pendingLabel }: { label: string; pendingLabel: string }) {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? "Saving…" : label}
+      {pending ? pendingLabel : label}
     </Button>
   );
 }
 
 export function NewsletterForm() {
-  const { newsletter } = getPageContent().forms;
+  const { newsletter, fields } = getPageContent().forms;
   const [state, action] = useActionState<FormState, FormData>(subscribe, {
     ok: false,
   });
@@ -37,15 +37,15 @@ export function NewsletterForm() {
         className="hidden"
         aria-hidden="true"
       />
-      <Label htmlFor="newsletter-email">Email</Label>
+      <Label htmlFor="newsletter-email">{fields.email}</Label>
       <Input
         id="newsletter-email"
         name="email"
         type="email"
-        placeholder="you@example.com"
+        placeholder={fields.emailPlaceholder}
         required
       />
-      <Submit label={newsletter.cta} />
+      <Submit label={newsletter.cta} pendingLabel={newsletter.pending} />
       <p role="status" aria-live="polite" className="min-h-5 text-sm">
         {state.ok && (
           <span data-testid="newsletter-ok" className="font-medium text-brand-700">

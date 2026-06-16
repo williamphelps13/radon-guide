@@ -11,19 +11,19 @@ import {
 } from "./ui/table";
 
 export function MitigationTable() {
-  const { mitigationRows } = getPageContent();
+  const { mitigationRows, mitigation } = getPageContent();
   return (
     <section
-      aria-label="Radon mitigation options"
+      aria-label={mitigation.ariaLabel}
       className="mx-auto mt-4 max-w-2xl px-5"
     >
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>System</TableHead>
-            <TableHead>Foundation</TableHead>
-            <TableHead>Cost</TableHead>
-            <TableHead>Reduction</TableHead>
+            <TableHead>{mitigation.headers.system}</TableHead>
+            <TableHead>{mitigation.headers.foundation}</TableHead>
+            <TableHead>{mitigation.headers.cost}</TableHead>
+            <TableHead>{mitigation.headers.reduction}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -43,7 +43,7 @@ export function MitigationTable() {
           href="/mitigators"
           className="text-sm text-brand-700 underline-offset-2 hover:underline"
         >
-          Find a certified mitigator →
+          {mitigation.findMitigatorCta} →
         </Link>
       </div>
     </section>

@@ -27,7 +27,13 @@ function popupContent(m: Mitigator): HTMLElement {
  * runs during SSR; if it cannot initialize (no WebGL), we render nothing and
  * the accessible list below stands alone.
  */
-export function MitigatorMap({ mitigators }: { mitigators: Mitigator[] }) {
+export function MitigatorMap({
+  mitigators,
+  ariaLabel,
+}: {
+  mitigators: Mitigator[];
+  ariaLabel: string;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
 
@@ -99,7 +105,7 @@ export function MitigatorMap({ mitigators }: { mitigators: Mitigator[] }) {
     <div
       ref={ref}
       role="region"
-      aria-label="Map of certified radon mitigators"
+      aria-label={ariaLabel}
       data-testid="mitigator-map"
       className="h-80 w-full overflow-hidden rounded-md border border-ink-100"
     />

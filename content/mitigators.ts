@@ -22,6 +22,15 @@ export const MITIGATORS = {
       "If a test comes back at or above 4 pCi/L, the next step is hiring a certified mitigator. California regulates the work itself: a mitigator must hold a national certification and a California contractor license, and be on the CDPH certified list. Everyone below clears that bar, so they can legally mitigate a California home, South Lake Tahoe included.",
     mapNote:
       "Pins mark each contractor's office, not their service area or where they're licensed. A few are based in Nevada but certified for California. Call to confirm they cover your area.",
+    mapAriaLabel: "Map of certified radon mitigators",
+    list: {
+      ariaLabel: "Certified radon mitigators in California",
+      caption:
+        "Listed where each business is based. Many serve a wider area, so call to confirm they cover your county.",
+      updatedLabel: "Updated",
+      headers: { name: "Name", location: "Location", phone: "Phone" },
+      servesCaveat: "serves California",
+    },
   },
   mitigators: [
     {

@@ -34,6 +34,27 @@ test("every risk-scale band renders its range and label", async ({ page }) => {
   }
 });
 
+test("the test CTA and risk-scale caption render", async ({ page }) => {
+  await expect(
+    page.getByText(content.ui.testCta, { exact: false }).first(),
+  ).toBeVisible();
+  await expect(
+    page.getByText(content.riskScaleCopy.caption, { exact: true }).first(),
+  ).toBeVisible();
+});
+
+test("the mitigation table headers render", async ({ page }) => {
+  const { headers } = content.mitigation;
+  for (const h of [
+    headers.system,
+    headers.foundation,
+    headers.cost,
+    headers.reduction,
+  ]) {
+    await expect(page.getByText(h, { exact: true }).first()).toBeVisible();
+  }
+});
+
 test("every content section renders its title and body", async ({ page }) => {
   for (const s of content.sections) {
     await expect(page.getByText(s.title, { exact: true }).first()).toBeVisible();
@@ -89,6 +110,13 @@ test("both form headings and CTAs render", async ({ page }) => {
   }
 });
 
+test("form field labels render from the model", async ({ page }) => {
+  const { fields } = content.forms;
+  for (const label of [fields.name, fields.email, fields.role, fields.message]) {
+    await expect(page.getByText(label, { exact: true }).first()).toBeVisible();
+  }
+});
+
 test("the mitigation section links to the mitigator directory", async ({
   page,
 }) => {
@@ -117,13 +145,29 @@ test.describe("mitigators page", () => {
     }
   });
 
+  test("renders the list copy (caption, headers, caveat) from the model", async ({
+    page,
+  }) => {
+    const { list } = mitigators.copy;
+    await expect(
+      page.getByText(list.caption, { exact: false }).first(),
+    ).toBeVisible();
+    for (const h of [list.headers.name, list.headers.location, list.headers.phone]) {
+      await expect(page.getByText(h, { exact: true }).first()).toBeVisible();
+    }
+    // The out-of-state caveat shows on the NV-based row.
+    await expect(
+      page.getByText(list.servesCaveat, { exact: true }).first(),
+    ).toBeVisible();
+  });
+
   test("every mitigator renders its name, location, and phone in the list", async ({
     page,
   }) => {
     // Scope to the list so a city/name is asserted in its row, not anywhere on
     // the page (the intro prose and map popups also contain these strings).
     const list = page.locator(
-      'section[aria-label="Certified radon mitigators in California"]',
+      `section[aria-label="${mitigators.copy.list.ariaLabel}"]`,
     );
     for (const m of mitigators.mitigators) {
       await expect(list.getByText(m.name, { exact: true }).first()).toBeVisible();
@@ -133,6 +177,34 @@ test.describe("mitigators page", () => {
           list.getByRole("link", { name: m.phone }).first(),
         ).toBeVisible();
       }
+    }
+  });
+});
+
+// Presence invariant for the legal pages (DRY, from content.legal).
+test.describe("legal pages", () => {
+  test("privacy renders its copy from the model", async ({ page }) => {
+    await page.goto("/privacy");
+    const { privacy } = content.legal;
+    for (const text of [privacy.updated, privacy.intro, privacy.newsletter]) {
+      await expect(page.getByText(text, { exact: true }).first()).toBeVisible();
+    }
+    // The access paragraph is split around an inline homepage link.
+    await expect(
+      page.getByRole("link", { name: privacy.access.link }),
+    ).toBeVisible();
+  });
+
+  test("disclosure renders its copy from the model", async ({ page }) => {
+    await page.goto("/disclosure");
+    const { disclosure } = content.legal;
+    for (const text of [
+      disclosure.updated,
+      disclosure.body,
+      disclosure.notMedicalHeading,
+      disclosure.notMedicalBody,
+    ]) {
+      await expect(page.getByText(text, { exact: true }).first()).toBeVisible();
     }
   });
 });

@@ -9,17 +9,17 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 
-function Submit({ label }: { label: string }) {
+function Submit({ label, pendingLabel }: { label: string; pendingLabel: string }) {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" disabled={pending}>
-      {pending ? "Sending…" : label}
+      {pending ? pendingLabel : label}
     </Button>
   );
 }
 
 export function PartnershipForm() {
-  const { partnership } = getPageContent().forms;
+  const { partnership, fields } = getPageContent().forms;
   const [state, action] = useActionState<FormState, FormData>(contact, {
     ok: false,
   });
@@ -37,11 +37,11 @@ export function PartnershipForm() {
         className="hidden"
         aria-hidden="true"
       />
-      <Label htmlFor="partnership-name">Name</Label>
+      <Label htmlFor="partnership-name">{fields.name}</Label>
       <Input id="partnership-name" name="name" required />
-      <Label htmlFor="partnership-email">Email</Label>
+      <Label htmlFor="partnership-email">{fields.email}</Label>
       <Input id="partnership-email" name="email" type="email" required />
-      <Label htmlFor="partnership-role">I am a</Label>
+      <Label htmlFor="partnership-role">{fields.role}</Label>
       <select
         id="partnership-role"
         name="role"
@@ -56,14 +56,14 @@ export function PartnershipForm() {
           </option>
         ))}
       </select>
-      <Label htmlFor="partnership-message">Message</Label>
+      <Label htmlFor="partnership-message">{fields.message}</Label>
       <Textarea
         id="partnership-message"
         name="message"
-        placeholder="How can we work together?"
+        placeholder={fields.messagePlaceholder}
         required
       />
-      <Submit label={partnership.cta} />
+      <Submit label={partnership.cta} pendingLabel={partnership.pending} />
       <p role="status" aria-live="polite" className="min-h-5 text-sm">
         {state.ok && (
           <span

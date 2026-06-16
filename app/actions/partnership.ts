@@ -7,9 +7,11 @@ import { getPageContent } from "@/lib/content";
 
 // Single source of truth: the accepted roles come from the content model (the
 // same list the partnership form renders), so the select and validation can't drift.
-const roleValues = getPageContent().forms.partnership.roles.map(
-  (r) => r.value,
-) as [string, ...string[]];
+const { partnership, errors } = getPageContent().forms;
+const roleValues = partnership.roles.map((r) => r.value) as [
+  string,
+  ...string[],
+];
 
 const schema = z.object({
   name: z.string().min(1).max(120),
@@ -32,18 +34,17 @@ export async function contact(
     message: form.get("message"),
     website: form.get("website") ?? "",
   });
-  if (!parsed.success)
-    return { ok: false, error: "Please fill in every field with a valid email." };
+  if (!parsed.success) return { ok: false, error: errors.invalidFields };
   if (parsed.data.website) return { ok: true }; // honeypot tripped
   try {
     const { name, email, role, message } = parsed.data;
-    await notifyOwner(
-      `Radon Guide — ${role} inquiry from ${name}`,
-      `From: ${name} <${email}> (${role})\n\n${message}`,
-    );
+    const subject = partnership.emailSubject
+      .replace("{role}", role)
+      .replace("{name}", name);
+    await notifyOwner(subject, `From: ${name} <${email}> (${role})\n\n${message}`);
     await trackServer({ name: "partnership_submit", props: { role } });
     return { ok: true };
   } catch {
-    return { ok: false, error: "Something went wrong. Please try again." };
+    return { ok: false, error: errors.generic };
   }
 }

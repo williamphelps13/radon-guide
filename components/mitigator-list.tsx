@@ -1,4 +1,4 @@
-import type { Mitigator } from "@/content/schema";
+import type { Mitigator, Mitigators } from "@/content/schema";
 import { telHref } from "@/lib/utils";
 import { SourceChip } from "./stat-link";
 import {
@@ -14,22 +14,23 @@ import {
 export function MitigatorList({
   mitigators,
   updatedAt,
+  copy,
 }: {
   mitigators: Mitigator[];
   updatedAt: string;
+  copy: Mitigators["copy"]["list"];
 }) {
   return (
-    <section aria-label="Certified radon mitigators in California">
+    <section aria-label={copy.ariaLabel}>
       <Table>
         <TableCaption className="text-left text-ink-500">
-          Listed where each business is based. Many serve a wider area, so call
-          to confirm they cover your county. Updated {updatedAt}.
+          {copy.caption} {copy.updatedLabel} {updatedAt}.
         </TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead>Phone</TableHead>
+            <TableHead>{copy.headers.name}</TableHead>
+            <TableHead>{copy.headers.location}</TableHead>
+            <TableHead>{copy.headers.phone}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -47,7 +48,7 @@ export function MitigatorList({
                 {m.city}, {m.state}
                 {m.state !== "CA" && (
                   <span className="block text-xs text-ink-500">
-                    serves California
+                    {copy.servesCaveat}
                   </span>
                 )}
               </TableCell>

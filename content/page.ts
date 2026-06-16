@@ -12,6 +12,11 @@ export const PAGE: PageContent = {
     organization:
       "Independent, mission-driven radon education for South Lake Tahoe. Every figure links to a primary source.",
   },
+  ui: {
+    testCta: "Test your home",
+    backToGuide: "Back to the guide",
+    credibilityAriaLabel: "Local radon facts",
+  },
   hero: {
     eyebrow: "South Lake Tahoe radon",
     headline:
@@ -79,6 +84,10 @@ export const PAGE: PageContent = {
     { range: "4–8", label: "elevated · action level", level: "elevated" },
     { range: "8+", label: "high", level: "high" },
   ],
+  riskScaleCopy: {
+    ariaLabel: "Radon level scale (pCi/L)",
+    caption: "Radon levels — pCi/L",
+  },
   derivation: {
     trigger: "See how we calculate the cigarette figure",
     body: "The average tested Tahoe home reads about 6–9 pCi/L (CGS SR-211). The EPA's cigarette-equivalence puts 4 pCi/L at roughly 8 cigarettes a day, so 6–9 pCi/L works out to about 12–18 a day. It's a lifetime-risk analogy, not a chemical-equivalence claim.",
@@ -134,21 +143,71 @@ export const PAGE: PageContent = {
       sourceId: "epa_citizens_guide",
     },
   ],
+  mitigation: {
+    ariaLabel: "Radon mitigation options",
+    headers: {
+      system: "System",
+      foundation: "Foundation",
+      cost: "Cost",
+      reduction: "Reduction",
+    },
+    findMitigatorCta: "Find a certified mitigator",
+  },
   forms: {
     newsletter: {
       heading: "Get notified when free kits open",
       cta: "Notify me",
       success: "Thanks — we'll alert you when free kits open.",
+      pending: "Saving…",
     },
     partnership: {
       heading: "Contractors & agents — partner with us",
       cta: "Send",
       success: "Thanks — we'll be in touch.",
+      pending: "Sending…",
+      emailSubject: "Radon Guide — {role} inquiry from {name}",
       roles: [
         { value: "homeowner", label: "Homeowner" },
         { value: "contractor", label: "Contractor" },
         { value: "agent", label: "Buyer's agent" },
       ],
+    },
+    fields: {
+      name: "Name",
+      email: "Email",
+      role: "I am a",
+      message: "Message",
+      emailPlaceholder: "you@example.com",
+      messagePlaceholder: "How can we work together?",
+    },
+    errors: {
+      invalidEmail: "Please enter a valid email.",
+      invalidFields: "Please fill in every field with a valid email.",
+      generic: "Something went wrong. Please try again.",
+    },
+  },
+  legal: {
+    privacy: {
+      title: "Privacy",
+      updated: "Last updated June 14, 2026",
+      intro:
+        "We use Vercel Web Analytics, which is cookieless and does not track you across sites, so there is no cookie banner. If you submit a form, we receive only what you enter (your email, and for partnership inquiries your name, role, and message) so we can respond to you. We do not sell or share it.",
+      newsletter:
+        "Newsletter emails are stored with our email provider (Resend) solely to notify you when free test kits open.",
+      access: {
+        before:
+          "To access or delete the information you've given us, reach out through the partnership form on our ",
+        link: "homepage",
+        after: " and we'll take care of it.",
+      },
+    },
+    disclosure: {
+      title: "Disclosure",
+      updated: "Last updated June 14, 2026",
+      body: "Radon Guide is an independent, mission-driven project. We currently have no paid relationships and earn nothing from the testing options we recommend; we point you to the cheapest reliable one. If that ever changes, we will say so here.",
+      notMedicalHeading: "Not medical advice",
+      notMedicalBody:
+        "This site is educational and is not a substitute for professional medical or environmental-health advice.",
     },
   },
 };
