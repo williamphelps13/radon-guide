@@ -85,11 +85,11 @@ const FormsSchema = z.object({
 const UiSchema = z.object({
   testCta: z.string().nonempty(), // primary "test your home" CTA label
   backToGuide: z.string().nonempty(), // legal + mitigator back-link label
-  credibilityAriaLabel: z.string().nonempty(), // accessible name for the stat strip
 });
 
-// Legal-page copy. Privacy's access paragraph is split so its inline homepage
-// link renders mid-sentence while the rendered text still equals the model.
+// Legal-page copy. Privacy's access paragraph is one model string with an inline
+// link rendered by splitting on `accessLink` (same as testing-path's withKitLink),
+// so the full sentence stays a single, presence-testable, voice-gated string.
 const LegalDocSchema = z.object({
   title: z.string().nonempty(),
   updated: z.string().nonempty(),
@@ -98,11 +98,8 @@ const LegalSchema = z.object({
   privacy: LegalDocSchema.extend({
     intro: z.string().nonempty(),
     newsletter: z.string().nonempty(),
-    access: z.object({
-      before: z.string().nonempty(),
-      link: z.string().nonempty(),
-      after: z.string().nonempty(),
-    }),
+    access: z.string().nonempty(), // full sentence; the link phrase is rendered inline
+    accessLink: z.string().nonempty(), // phrase within `access` to wrap as the homepage link
   }),
   disclosure: LegalDocSchema.extend({
     body: z.string().nonempty(),
@@ -175,6 +172,9 @@ export const PageContentSchema = z.object({
     sourceIds: z.array(sourceId).min(1),
   }),
   stats: z.array(StatSchema),
+  credibility: z.object({
+    ariaLabel: z.string().nonempty(), // accessible name for the first-screen stat strip
+  }),
   sections: z.array(SectionSchema),
   riskScale: z.array(RiskLevelSchema).min(1),
   riskScaleCopy: z.object({

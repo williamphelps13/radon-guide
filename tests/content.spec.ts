@@ -121,7 +121,7 @@ test("the mitigation section links to the mitigator directory", async ({
   page,
 }) => {
   await expect(
-    page.getByRole("link", { name: /certified mitigator/i }),
+    page.getByRole("link", { name: content.mitigation.findMitigatorCta }),
   ).toBeVisible();
 });
 
@@ -186,18 +186,30 @@ test.describe("legal pages", () => {
   test("privacy renders its copy from the model", async ({ page }) => {
     await page.goto("/privacy");
     const { privacy } = content.legal;
-    for (const text of [privacy.updated, privacy.intro, privacy.newsletter]) {
+    await expect(
+      page.getByRole("heading", { level: 1, name: privacy.title }),
+    ).toBeVisible();
+    // `access` is one model string; the <p> wraps its link phrase inline, so the
+    // full sentence is still assertable as a whole.
+    for (const text of [
+      privacy.updated,
+      privacy.intro,
+      privacy.newsletter,
+      privacy.access,
+    ]) {
       await expect(page.getByText(text, { exact: true }).first()).toBeVisible();
     }
-    // The access paragraph is split around an inline homepage link.
     await expect(
-      page.getByRole("link", { name: privacy.access.link }),
+      page.getByRole("link", { name: privacy.accessLink }),
     ).toBeVisible();
   });
 
   test("disclosure renders its copy from the model", async ({ page }) => {
     await page.goto("/disclosure");
     const { disclosure } = content.legal;
+    await expect(
+      page.getByRole("heading", { level: 1, name: disclosure.title }),
+    ).toBeVisible();
     for (const text of [
       disclosure.updated,
       disclosure.body,

@@ -38,9 +38,11 @@ export async function contact(
   if (parsed.data.website) return { ok: true }; // honeypot tripped
   try {
     const { name, email, role, message } = parsed.data;
+    // Function replacers so a name/role containing `$` patterns ($&, $1, …) is
+    // inserted verbatim rather than interpreted by String.prototype.replace.
     const subject = partnership.emailSubject
-      .replace("{role}", role)
-      .replace("{name}", name);
+      .replace("{role}", () => role)
+      .replace("{name}", () => name);
     await notifyOwner(subject, `From: ${name} <${email}> (${role})\n\n${message}`);
     await trackServer({ name: "partnership_submit", props: { role } });
     return { ok: true };

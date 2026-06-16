@@ -30,8 +30,7 @@ test("the mitigation table cites its source as a primary new-tab link", async ({
 }) => {
   await expectPrimarySourceLink(page, {
     sourceId: "epa_citizens_guide",
-    selector:
-      'section[aria-label="Radon mitigation options"] a[data-source-tier="primary"]',
+    selector: `section[aria-label="${content.mitigation.ariaLabel}"] a[data-source-tier="primary"]`,
   });
 });
 

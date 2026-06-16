@@ -15,7 +15,6 @@ export const PAGE: PageContent = {
   ui: {
     testCta: "Test your home",
     backToGuide: "Back to the guide",
-    credibilityAriaLabel: "Local radon facts",
   },
   hero: {
     eyebrow: "South Lake Tahoe radon",
@@ -52,6 +51,9 @@ export const PAGE: PageContent = {
       sourceId: "epa_health_risk",
     },
   ],
+  credibility: {
+    ariaLabel: "Local radon facts",
+  },
   sections: [
     {
       id: "is-my-home",
@@ -194,12 +196,9 @@ export const PAGE: PageContent = {
         "We use Vercel Web Analytics, which is cookieless and does not track you across sites, so there is no cookie banner. If you submit a form, we receive only what you enter (your email, and for partnership inquiries your name, role, and message) so we can respond to you. We do not sell or share it.",
       newsletter:
         "Newsletter emails are stored with our email provider (Resend) solely to notify you when free test kits open.",
-      access: {
-        before:
-          "To access or delete the information you've given us, reach out through the partnership form on our ",
-        link: "homepage",
-        after: " and we'll take care of it.",
-      },
+      access:
+        "To access or delete the information you've given us, reach out through the partnership form on our homepage and we'll take care of it.",
+      accessLink: "homepage",
     },
     disclosure: {
       title: "Disclosure",
