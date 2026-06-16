@@ -100,6 +100,11 @@ const LegalSchema = z.object({
     newsletter: z.string().nonempty(),
     access: z.string().nonempty(), // full sentence; the link phrase is rendered inline
     accessLink: z.string().nonempty(), // phrase within `access` to wrap as the homepage link
+  }).refine((p) => p.access.includes(p.accessLink), {
+    // The page splits `access` on `accessLink`; if the phrase drifts out of the
+    // sentence the link silently drops, so guard the invariant at build time.
+    error: "legal.privacy.accessLink must be a substring of legal.privacy.access",
+    path: ["accessLink"],
   }),
   disclosure: LegalDocSchema.extend({
     body: z.string().nonempty(),
@@ -114,7 +119,7 @@ const LegalSchema = z.object({
 const MitigatorSchema = z.object({
   name: z.string().nonempty(), // "First Last"
   business: z.string().optional(), // company; omitted for sole individuals
-  certId: z.string().nonempty(), // CDPH mitigation cert # — the de-dupe key
+  certId: z.string().nonempty(), // CDPH mitigation cert # (the de-dupe key)
   city: z.string().nonempty(), // office city (CSLB)
   state: z.enum(["CA", "NV"]), // office state (a CA-certified pro can be NV-based)
   zip: z.string().optional(),

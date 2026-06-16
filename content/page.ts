@@ -6,9 +6,9 @@ import type { PageContent } from "./schema";
  */
 export const PAGE: PageContent = {
   meta: {
-    title: "Radon in South Lake Tahoe — test your home",
+    title: "Radon in South Lake Tahoe: test your home",
     description:
-      "About half of tested South Lake Tahoe homes exceed the EPA radon action level — vs. under 1% statewide. See how to test yours, every figure sourced.",
+      "About half of tested South Lake Tahoe homes exceed the EPA radon action level, vs. under 1% statewide. See how to test yours, every figure sourced.",
     organization:
       "Independent, mission-driven radon education for South Lake Tahoe. Every figure links to a primary source.",
   },
@@ -20,9 +20,9 @@ export const PAGE: PageContent = {
     eyebrow: "South Lake Tahoe radon",
     headline:
       "The average tested home in South Lake Tahoe carries the lung-cancer risk of smoking 12–18 cigarettes a day.",
-    body: "Radon is an invisible, odorless gas seeping up from Tahoe's granite. It's a leading cause of lung cancer — and there's no way to know your home's level without testing.",
+    body: "Radon is an invisible, odorless gas seeping up from Tahoe's granite. It's a leading cause of lung cancer, and there's no way to know your home's level without testing.",
     caveat:
-      "The cigarette figure is a risk analogy popularized by the EPA — see how we calculate it below.",
+      "The cigarette figure is a risk analogy popularized by the EPA. See how we calculate it below.",
     sourceIds: ["epa_citizens_guide", "darby_2005"],
   },
   stats: [
@@ -59,7 +59,7 @@ export const PAGE: PageContent = {
       id: "is-my-home",
       title: "Is my home at risk?",
       order: 3,
-      body: "Tahoe sits on uranium-bearing granite, and fractured rock plus cold, sealed winters pull soil gas indoors. The EPA map rates the area moderate-risk because it averages all of El Dorado County; the California Geological Survey identifies the Tahoe basin specifically as high-risk. Your neighbor's result tells you nothing — the only way to know is to test your home.",
+      body: "Tahoe sits on uranium-bearing granite, and fractured rock plus cold, sealed winters pull soil gas indoors. The EPA map rates the area moderate-risk because it averages all of El Dorado County; the California Geological Survey identifies the Tahoe basin specifically as high-risk. Your neighbor's result tells you nothing. The only way to know is to test your home.",
     },
     {
       id: "how-bad",
@@ -69,15 +69,15 @@ export const PAGE: PageContent = {
     },
     {
       id: "fix-it",
-      title: "If it's elevated — fix it",
+      title: "If it's elevated, fix it",
       order: 6,
-      body: "Most Tahoe homes need sub-slab or sub-membrane depressurization, typically $1,200–$2,500. Sealing cracks alone, opening windows, and air purifiers do not work. A system lasts decades (fans 5–8 years in Tahoe's freeze-thaw), roughly $1/day over its life. A 2.5 pCi/L reading means monitor and retest — not panic.",
+      body: "Most Tahoe homes need sub-slab or sub-membrane depressurization, typically $1,200–$2,500. Sealing cracks alone, opening windows, and air purifiers do not work. A system lasts decades (fans 5–8 years in Tahoe's freeze-thaw), roughly $1/day over its life. A 2.5 pCi/L reading means monitor and retest, not panic.",
     },
     {
       id: "why-unknown",
       title: "Why isn't this better known? · How we source",
       order: 7,
-      body: "Radon has no villain and no daily ritual to ban, and it threatens a geographically concentrated population with no organized lobby. We cite a primary source for every number on this page — click any figure to verify it on the EPA, WHO, CDC, CDPH, or CGS. Where the science is uncertain, we say so. This is an independent, mission-driven project with no paid relationships yet.",
+      body: "Radon has no villain and no daily ritual to ban, and it threatens a geographically concentrated population with no organized lobby. We cite a primary source for every number on this page; click any figure to verify it on the EPA, WHO, CDC, CDPH, or CGS. Where the science is uncertain, we say so. This is an independent, mission-driven project with no paid relationships yet.",
     },
   ],
   riskScale: [
@@ -88,14 +88,14 @@ export const PAGE: PageContent = {
   ],
   riskScaleCopy: {
     ariaLabel: "Radon level scale (pCi/L)",
-    caption: "Radon levels — pCi/L",
+    caption: "Radon levels (pCi/L)",
   },
   derivation: {
     trigger: "See how we calculate the cigarette figure",
     body: "The average tested Tahoe home reads about 6–9 pCi/L (CGS SR-211). The EPA's cigarette-equivalence puts 4 pCi/L at roughly 8 cigarettes a day, so 6–9 pCi/L works out to about 12–18 a day. It's a lifetime-risk analogy, not a chemical-equivalence claim.",
   },
   testing: {
-    heading: "Find out — test your home",
+    heading: "Find out: test your home",
     protocol:
       "Test in winter, windows shut 12 hours before and during; place the detector on an interior wall, 20+ inches up.",
     startHere: "start here",
@@ -104,7 +104,7 @@ export const PAGE: PageContent = {
     {
       status: "Never tested",
       action:
-        "Order a test — the CDPH $14.95 kit is the cheapest reliable option.",
+        "Order a test. The CDPH $14.95 kit is the cheapest reliable option.",
       primary: true,
     },
     { status: "Under 2 pCi/L", action: "You're low. Retest every 5 years." },
@@ -159,15 +159,15 @@ export const PAGE: PageContent = {
     newsletter: {
       heading: "Get notified when free kits open",
       cta: "Notify me",
-      success: "Thanks — we'll alert you when free kits open.",
+      success: "Thanks! We'll alert you when free kits open.",
       pending: "Saving…",
     },
     partnership: {
-      heading: "Contractors & agents — partner with us",
+      heading: "Contractors & agents: partner with us",
       cta: "Send",
-      success: "Thanks — we'll be in touch.",
+      success: "Thanks! We'll be in touch.",
       pending: "Sending…",
-      emailSubject: "Radon Guide — {role} inquiry from {name}",
+      emailSubject: "Radon Guide: {role} inquiry from {name}",
       roles: [
         { value: "homeowner", label: "Homeowner" },
         { value: "contractor", label: "Contractor" },

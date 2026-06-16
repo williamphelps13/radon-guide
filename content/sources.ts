@@ -27,7 +27,7 @@ export const SOURCES = {
   },
   epa_health_risk: {
     id: "epa_health_risk",
-    label: "EPA — Health Risk of Radon",
+    label: "EPA: Health Risk of Radon",
     url: "https://www.epa.gov/radon/health-risk-radon",
     tier: "primary",
   },
@@ -39,7 +39,7 @@ export const SOURCES = {
   },
   who_radon: {
     id: "who_radon",
-    label: "WHO — Radon and Health",
+    label: "WHO: Radon and Health",
     url: "https://www.who.int/news-room/fact-sheets/detail/radon-and-health",
     tier: "primary",
   },

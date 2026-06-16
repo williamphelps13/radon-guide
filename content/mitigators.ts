@@ -8,7 +8,7 @@ import type { Mitigators } from "./schema";
  * (street-level) with an OSM city/ZIP fallback for PO-box-only addresses
  * (`precise: false`). Regenerate with `scripts/geocode-mitigators.mjs`.
  *
- * Snapshot date in `updatedAt` — CDPH notes the list is not updated daily.
+ * Snapshot date in `updatedAt`; CDPH notes the list is not updated daily.
  * `certId` is the de-dupe key (the source list can repeat a person).
  */
 export const MITIGATORS = {

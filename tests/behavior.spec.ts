@@ -80,7 +80,9 @@ test("partnership form: empty submit shows an error", async ({ page }) => {
   // Bypass native required so the Server Action's validation is exercised.
   await form.evaluate((f: HTMLFormElement) => (f.noValidate = true));
   await form.getByRole("button").click();
-  await expect(page.getByTestId("partnership-error")).toBeVisible();
+  await expect(page.getByTestId("partnership-error")).toHaveText(
+    content.forms.errors.invalidFields,
+  );
 });
 
 test("opening the derivation reveals the math and fires derivation_open", async ({
